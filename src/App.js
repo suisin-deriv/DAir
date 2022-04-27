@@ -9,6 +9,7 @@ const ExpenseProvider = ({children}) => {
   
   const expenses = useLocalStore(()=>({
     connected: false,
+    isLoading: false,
     profile:{
       total_balance: 0,
       token: {
@@ -22,20 +23,33 @@ const ExpenseProvider = ({children}) => {
 
     calculate_balance: false,
 
+    synth_count: 0,
+    frx_count:0,
+    com_count:0,
+    crypt_count:0,
+    stock_count:0,
+    basket_count:0,
+
     getConnected: ()=>{
       reference.current = new WebSocket("wss://ws.binaryws.com/websockets/v3?app_id=1089")
+      expenses.isLoading = true
       if(expenses.connected === false){
         reference.current.onopen = function(evt){
           reference.current.send(JSON.stringify(expenses.profile.token));
 
-          reference.current.onmessage = function(){
+          reference.current.onmessage = function(msg){
+            var data = JSON.parse(msg.data)
+            console.log(data)
+            
+            expenses.isLoading = false
             expenses.connected = true
           }
         }
       }else{
+        expenses.isLoading = false
         reference.current.close()
         reference.current.onclose = function(msg){
-          console.log("Successfully Closed Websocket")
+          console.log("Successfully Closed Websocket"+msg)
         }
         expenses.connected = false
         expenses.profile.total_balance = 0
@@ -43,6 +57,12 @@ const ExpenseProvider = ({children}) => {
         expenses.get_statement = false
         expenses.all_statement = []
         expenses.calculate_balance = false
+        expenses.synth_count= 0
+        expenses.frx_count=0
+        expenses.com_count=0
+        expenses.crypt_count=0
+        expenses.stock_count=0
+        expenses.basket_count=0
       }
     },
 
@@ -81,8 +101,16 @@ const ExpenseProvider = ({children}) => {
           const toFindDuplicates = arry => arry.filter((item, index) => arry.indexOf(item) !== index)
           const duplicateElements = toFindDuplicates(valueArr);
           // console.log(duplicateElements)
+          let count_synth = 0
+          let count_frx = 0
+          let count_com = 0
+          let count_crypt = 0
+          let count_sind = 0
+          let count_bind = 0
+
           duplicateElements.forEach(
             (item) => {
+              console.log(duplicateElements)
               let calculate_expense = 0
               let trade_item = ""
               let color = ""
@@ -118,6 +146,26 @@ const ExpenseProvider = ({children}) => {
               }else{
                 color="black"
                 gainloss = "NULL"
+              }
+
+              if(trade_item === "Synthetic Indices"){
+                count_synth++
+                expenses.synth_count = count_synth
+              }else if(trade_item === "Commodities"){
+                count_com++
+                expenses.com_count = count_com
+              }else if(trade_item === "Stock Indices"){
+                count_sind++
+                expenses.stock_count = count_sind
+              }else if(trade_item === "Basket Indices"){
+                count_bind++
+                expenses.basket_count = count_bind
+              }else if(trade_item === "Cryptocurrencies"){
+                count_crypt++
+                expenses.crypt_count = count_crypt
+              }else{
+                count_frx++
+                expenses.frx_count = count_frx
               }
 
               expenses_info.push({
@@ -164,9 +212,17 @@ const ExpenseConnection = () => {
               </button>
             ):
             (
-              <button onClick={store.getConnected}>
-                Connect
-              </button>
+              (store.isLoading ? 
+                <button disabled>
+                  Loading...
+                </button> : 
+                <button onClick={store.getConnected}>
+                  Connect
+                </button>
+              )
+              // <button onClick={store.getConnected}>
+              //   Connect
+              // </button>
             )
           )
         }
@@ -180,6 +236,12 @@ const ExpenseConnection = () => {
 
 const ExpenseLocation = () => {
   const store = React.useContext(ExpenseContext)
+  const [synthIsOpen, setSynthIsOpen] = React.useState(false)
+  const [frxIsOpen, setFrxIsOpen] = React.useState(false)
+  const [comIsOpen, setComIsOpen] = React.useState(false)
+  const [cryptIsOpen, setCryptIsOpen] = React.useState(false)
+  const [sindIsOpen, setSindIsOpen] = React.useState(false)
+  const [bindIsOpen, setBindIsOpen] = React.useState(false)
   
   return useObserver( () => (
     <>
@@ -187,153 +249,232 @@ const ExpenseLocation = () => {
       <div className='expenses--container'>
 
         <div className='expenses--container__synth'>
-          <div className='expenses--container__synth--header'>
+          <div 
+            className='expenses--container__synth--header' 
+            onClick={
+              ()=>{
+                setSynthIsOpen(!synthIsOpen)
+              }
+            }
+          >
             <h1>SYNTHETIC INDICES</h1>
+            <div className='expenses--container__synth--header__counter'>
+              {store.synth_count}
+            </div>
           </div>
 
-          <div className='expenses--container__synth--content'>
-            {
-              store.profile.expense_item.map(
-                (element,index) => 
-                  (
-                    element.category === "Synthetic Indices" ? 
-                    (
-                      <Expense
-                        key={index}
-                        color={element.color} 
-                        gain_loss={element.gain_loss} 
-                        expense={element.expense}
-                      />
-                    ) : null
+          { synthIsOpen ? 
+            (
+              <div className='expenses--container__synth--content'>
+                {
+                  store.profile.expense_item.map(
+                    (element,index) => (
+                        element.category === "Synthetic Indices" ? 
+                        (
+                          <Expense
+                            key={index}
+                            color={element.color} 
+                            gain_loss={element.gain_loss} 
+                            expense={element.expense}
+                          />
+                        ) : null
+                      )
                   )
-                )
-            }
-          </div>
+                }
+              </div>
+            ) 
+            : null
+          }
         </div>
 
         <div className='expenses--container__frx'>
-          <div className='expenses--container__frx--header'>
+          <div 
+            className='expenses--container__frx--header'
+            onClick={
+              ()=>{
+                setFrxIsOpen(!frxIsOpen)
+              }
+            }
+          >
             <h1>FOREX</h1>
+            <div className='expenses--container__synth--header__counter'>
+              {store.frx_count}
+            </div>
           </div>
 
-          <div className='expenses--container__frx--content'>
-            {
-              store.profile.expense_item.map(
-                (element,index) => 
-                  (
-                    element.category === "Forex" ? 
-                    (
-                      <Expense 
-                        key={index}
-                        color={element.color} 
-                        gain_loss={element.gain_loss} 
-                        expense={element.expense}
-                      />
-                    ) : null
-                  )
-                )
-            }
-          </div>
+          {frxIsOpen ? 
+            (
+              <div className='expenses--container__frx--content'>
+                {
+                  store.profile.expense_item.map(
+                    (element,index) => 
+                      (
+                        element.category === "Forex" ? 
+                        (
+                          <Expense 
+                            key={index}
+                            color={element.color} 
+                            gain_loss={element.gain_loss} 
+                            expense={element.expense}
+                          />
+                        ) : null
+                      )
+                    )
+                }
+              </div>
+            ) : null}
         </div>
 
         <div className='expenses--container__com'>
-          <div className='expenses--container__com--header'>
+          <div 
+            className='expenses--container__com--header'
+            onClick={
+              ()=>{
+                setComIsOpen(!comIsOpen)
+              }
+            }
+          >
             <h1>COMMODITIES</h1>
+            <div className='expenses--container__synth--header__counter'>
+              {store.com_count}
+            </div>
           </div>
 
-          <div className='expenses--container__com--content'>
-            {
-              store.profile.expense_item.map(
-                (element,index) => 
-                  (
-                    element.category === "Commodities" ? 
-                    (
-                      <Expense 
-                        key={index}
-                        color={element.color} 
-                        gain_loss={element.gain_loss} 
-                        expense={element.expense}
-                      />
-                    ) : null
-                  )
-                )
-            }
-          </div>
+          {comIsOpen ? 
+            (
+              <div className='expenses--container__com--content'>
+                {
+                  store.profile.expense_item.map(
+                    (element,index) => 
+                      (
+                        element.category === "Commodities" ? 
+                        (
+                          <Expense 
+                            key={index}
+                            color={element.color} 
+                            gain_loss={element.gain_loss} 
+                            expense={element.expense}
+                          />
+                        ) : null
+                      )
+                    )
+                }
+              </div>
+            ) : null}
         </div>
 
         <div className='expenses--container__crypt'>
-          <div className='expenses--container__crypt--header'>
+          <div 
+            className='expenses--container__crypt--header'
+            onClick={
+              ()=>{
+                setCryptIsOpen(!cryptIsOpen)
+              }
+            }
+          >
             <h1>CRYPTOCURRENCIES</h1>
+            <div className='expenses--container__synth--header__counter'>
+              {store.crypt_count}
+            </div>
           </div>
 
-          <div className='expenses--container__crypt--content'>
-            {
-              store.profile.expense_item.map(
-                (element,index) => 
-                  (
-                    element.category === "Cryptocurrencies" ? 
-                    (
-                      <Expense 
-                        key={index}
-                        color={element.color} 
-                        gain_loss={element.gain_loss} 
-                        expense={element.expense}
-                      />
-                    ) : null
-                  )
-                )
-            }
-          </div>
+          {cryptIsOpen ? 
+            (
+              <div className='expenses--container__crypt--content'>
+                {
+                  store.profile.expense_item.map(
+                    (element,index) => 
+                      (
+                        element.category === "Cryptocurrencies" ? 
+                        (
+                          <Expense 
+                            key={index}
+                            color={element.color} 
+                            gain_loss={element.gain_loss} 
+                            expense={element.expense}
+                          />
+                        ) : null
+                      )
+                    )
+                }
+              </div>
+            ) : null}
         </div>
 
         <div className='expenses--container__sind'>
-          <div className='expenses--container__sind--header'>
+          <div 
+            className='expenses--container__sind--header'
+            onClick={
+              ()=>{
+                setSindIsOpen(!sindIsOpen)
+              }
+            }
+          >
             <h1>STOCK INDICES</h1>
+            <div className='expenses--container__synth--header__counter'>
+              {store.stock_count}
+            </div>
           </div>
 
-          <div className='expenses--container__sind--content'>
-            {
-              store.profile.expense_item.map(
-                (element,index) => 
-                  (
-                    element.category === "Stock Indices" ? 
-                    (
-                      <Expense 
-                        key={index}
-                        color={element.color} 
-                        gain_loss={element.gain_loss} 
-                        expense={element.expense}
-                      />
-                    ) : null
-                  )
-                )
-            }
-          </div>
+          { sindIsOpen ? 
+            (
+              <div className='expenses--container__sind--content'>
+                {
+                  store.profile.expense_item.map(
+                    (element,index) => 
+                      (
+                        element.category === "Stock Indices" ? 
+                        (
+                          <Expense 
+                            key={index}
+                            color={element.color} 
+                            gain_loss={element.gain_loss} 
+                            expense={element.expense}
+                          />
+                        ) : null
+                      )
+                    )
+                }
+              </div>
+            ) : null}
         </div>
 
         <div className='expenses--container__bind'>
-          <div className='expenses--container__bind--header'>
+          <div 
+            className='expenses--container__bind--header'
+            onClick={
+              ()=>{
+                setBindIsOpen(!bindIsOpen)
+              }
+            }
+          >
             <h1>BASKET INDICES</h1>
+            <div className='expenses--container__synth--header__counter'>
+              {store.basket_count}
+            </div>
           </div>
 
-          <div className='expenses--container__bind--content'>
-            {
-              store.profile.expense_item.map(
-                (element,index) => 
-                  (
-                    element.category === "Basket Indices" ? 
-                    (
-                      <Expense 
-                        key={index}
-                        color={element.color} 
-                        gain_loss={element.gain_loss} 
-                        expense={element.expense}
-                      />
-                    ) : null
-                  )
-                )
-            }
-          </div>
+          {bindIsOpen ? 
+            (
+              <div className='expenses--container__bind--content'>
+                {
+                  store.profile.expense_item.map(
+                    (element,index) => 
+                      (
+                        element.category === "Basket Indices" ? 
+                        (
+                          <Expense 
+                            key={index}
+                            color={element.color} 
+                            gain_loss={element.gain_loss} 
+                            expense={element.expense}
+                          />
+                        ) : null
+                      )
+                    )
+                }
+              </div>
+            ) : null}
         </div>
 
       </div>
