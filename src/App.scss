@@ -1,0 +1,225 @@
+$primary-color: #726CFA;
+$title-color: rgb(235, 235, 235);
+$card-content-color: #F5F5FF;
+$mobile: 375px;
+$tablet: 768px;
+$laptop: 1024px;
+$laptop-large: 1440px;
+
+@mixin color-container($color) {
+    height: 40px;
+    background-color: $color;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 8px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+@mixin color-content($color){
+    background-color: $color;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.balance--container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    background-color: $primary-color;
+
+    p{
+        font-size: 12px;
+        font-weight: 500;
+        color: $title-color;
+    }
+
+    h1{
+        margin-top: 0;
+        color: white;
+    }
+}
+
+.button--container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+    &__buttons{
+        background-color: #F1F0F8;
+        height: 60px;
+        width: auto;
+        display: flex;
+        align-items: center;
+        border-radius: 100px;
+
+        button{
+            height: 40px;
+            width: 100px;
+            margin: 0 20px;
+            border: 1px solid $primary-color;
+            background-color: transparent;
+            border-radius: 100px;
+            color: $primary-color;
+        }
+    }
+}
+
+.expenses--title{
+    text-indent: 10px;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.expenses--container{
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &__synth{
+        margin-top: 10px;
+        width: 90%;
+
+        &--header{
+            @include color-container(#C6E6FD);
+        }
+
+        &--content{
+            @include color-content(#F4F4FE)
+        }
+    }
+
+    &__frx{
+        margin-top: 10px;
+        width: 90%;
+
+        &--header{
+            @include color-container(#F7D9DA);
+        }
+
+        &--content{
+            @include color-content(#fff2f2)
+        }
+    }
+
+    &__com{
+        margin-top: 10px;
+        width: 90%;
+
+        &--header{
+            @include color-container(#e7d9f7);
+        }
+
+        &--content{
+            @include color-content(#f6f1fd)
+        }
+    }
+
+    &__crypt{
+        margin-top: 10px;
+        width: 90%;
+
+        &--header{
+            @include color-container(#f7d9e8);
+        }
+
+        &--content{
+            @include color-content(#fff1f8)
+        }
+    }
+
+    &__sind{
+        margin-top: 10px;
+        width: 90%;
+
+        &--header{
+            @include color-container(#d9f7f0);
+        }
+
+        &--content{
+            @include color-content(#fafffe)
+        }
+    }
+
+    &__bind{
+        margin-top: 10px;
+        width: 90%;
+
+        &--header{
+            @include color-container(#f2f7d9);
+        }
+
+        &--content{
+            @include color-content(#fdfff2)
+        }
+    }
+}
+
+@media screen and (min-width:$tablet) {
+    .expenses--container{
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        &__synth{
+            width: 45%;
+        }
+
+        &__frx{
+            width: 45%;
+        }
+
+        &__com{
+            width: 45%;
+        }
+
+        &__crypt{
+            width: 45%;
+        }
+
+        &__sind{
+            width: 45%;
+        }
+
+        &__bind{
+            width: 45%;
+        }
+    }
+}
+
+
+@media screen and (min-width:$laptop-large) {
+    .expenses--container{
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        &__synth{
+            width: 30%;
+        }
+
+        &__frx{
+            width: 30%;
+        }
+
+        &__com{
+            width: 30%;
+        }
+
+        &__crypt{
+            width: 30%;
+        }
+
+        &__sind{
+            width: 30%;
+        }
+
+        &__bind{
+            width: 30%;
+        }
+    }
+}

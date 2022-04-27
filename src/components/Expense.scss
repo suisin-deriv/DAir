@@ -1,0 +1,18 @@
+.list--expenses--container{
+    margin-top: 0;
+
+    &__items{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        h1{
+            font-size: 12px;
+        }
+    }
+
+    &__divider{
+        width: 95%;
+        margin-bottom: 9px;
+    }
+}
