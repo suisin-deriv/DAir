@@ -11,6 +11,7 @@ const ExpenseProvider = ({children}) => {
     connected: false,
     isLoading: false,
     profile:{
+      login_id:'',
       total_balance: 0,
       token: {
         authorize:'',
@@ -46,6 +47,8 @@ const ExpenseProvider = ({children}) => {
               
               if(data.msg_type === "authorize"){
                 if(data.error === undefined){
+                  expenses.profile.login_id = data.authorize.loginid
+                  console.log(expenses.profile.login_id)
                   reference.current.send(JSON.stringify({
                     balance:1,
                     subscribe:1
@@ -214,11 +217,11 @@ const ExpenseConnection = () => {
           (store.connected ? 
             (
               <div className='button--container__buttons'>
-                <input 
+                {/* <input 
                   className='button--container__buttons--textfield'
-                  placeholder={store.profile.token.authorize}
                   disabled
-                />
+                /> */}
+                <span className='button--container__buttons--login-id'>{store.profile.login_id}</span>
                 <button onClick={store.getConnected} style={{backgroundColor:"red",color:"white"}}>
                   Disconnect
                 </button>

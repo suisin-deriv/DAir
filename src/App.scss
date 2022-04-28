@@ -90,14 +90,22 @@ background-size: cover;
             text-indent: 10px;
         }
 
+        &--login-id{
+            margin: 0 20px;
+            color: rgb(100, 100, 100);
+        }
+
         &--textfield:disabled{
             height: 40px;
             width: 200px;
+            display: flex;
             margin: 0 10px;
             border-radius: 100px;
             border: 0.5px solid rgb(189, 189, 189);
             text-indent: 10px;
             color: $disabled-color;
+            justify-content: center;
+            align-items: center;
         }
 
         button{
