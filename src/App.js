@@ -79,11 +79,12 @@ const ExpenseProvider = ({children}) => {
                 )
                 
                 let expenses_info = []
-                // console.log(expenses.all_statement);
-                var valueArr = expenses.all_statement.map(function(item){return item.contract_id})
+                let valueArr = []
+
+                valueArr = expenses.all_statement.map(function(item){return item.contract_id})
                 const toFindDuplicates = arry => arry.filter((item, index) => arry.indexOf(item) !== index)
                 const duplicateElements = toFindDuplicates(valueArr);
-                // console.log(duplicateElements)
+
                 let count_synth = 0
                 let count_frx = 0
                 let count_com = 0
@@ -93,7 +94,6 @@ const ExpenseProvider = ({children}) => {
       
                 duplicateElements.forEach(
                   (item) => {
-                    console.log(duplicateElements)
                     let calculate_expense = 0
                     let trade_item = ""
                     let color = ""
@@ -158,8 +158,6 @@ const ExpenseProvider = ({children}) => {
                       "gain_loss": gainloss
                     })
       
-                    // console.log(expenses_info)
-      
                     expenses.profile.expense_item = expenses_info
                   }
                 )
@@ -170,23 +168,24 @@ const ExpenseProvider = ({children}) => {
           }
         }
         else{
-          expenses.isLoading = false
-          reference.current.close()
+            
           reference.current.onclose = function(msg){
-            console.log("Successfully Closed Websocket"+msg)
+            alert("Successfully Closed Websocket")
+            expenses.isLoading = false
+            expenses.connected = false
+            expenses.profile.total_balance = 0
+            expenses.profile.expense_item = []
+            expenses.get_statement = false
+            expenses.all_statement = []
+            expenses.calculate_balance = false
+            expenses.synth_count= 0
+            expenses.frx_count=0
+            expenses.com_count=0
+            expenses.crypt_count=0
+            expenses.stock_count=0
+            expenses.basket_count=0
           }
-          expenses.connected = false
-          expenses.profile.total_balance = 0
-          expenses.profile.expense_item = []
-          expenses.get_statement = false
-          expenses.all_statement = []
-          expenses.calculate_balance = false
-          expenses.synth_count= 0
-          expenses.frx_count=0
-          expenses.com_count=0
-          expenses.crypt_count=0
-          expenses.stock_count=0
-          expenses.basket_count=0
+          return reference.current.close()
         }
       }
     },
@@ -267,7 +266,7 @@ const ExpenseLocation = () => {
   
   return useObserver( () => (
     <>
-      <p className='expenses--title'>Total Expenses</p>
+      <p className='expenses--title'>EXPENSES</p>
       <div className='expenses--container'>
 
         <div className='expenses--container__synth'>
