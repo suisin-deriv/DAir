@@ -48,7 +48,6 @@ const ExpenseProvider = ({children}) => {
               if(data.msg_type === "authorize"){
                 if(data.error === undefined){
                   expenses.profile.login_id = data.authorize.loginid
-                  console.log(expenses.profile.login_id)
                   reference.current.send(JSON.stringify({
                     balance:1,
                     subscribe:1
