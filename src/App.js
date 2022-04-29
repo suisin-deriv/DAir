@@ -178,6 +178,7 @@ const ExpenseProvider = ({children}) => {
             expenses.connected = false
             expenses.profile.total_balance = 0
             expenses.profile.expense_item = []
+            expenses.profile.token.authorize = ""
             expenses.get_statement = false
             expenses.all_statement = []
             expenses.calculate_balance = false
