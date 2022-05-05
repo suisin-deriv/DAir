@@ -1,0 +1,64 @@
+@import "../../App.scss";
+
+.button--container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+    &__buttons{
+        background-color: #F1F0F8;
+        height: 60px;
+        width: auto;
+        display: flex;
+        align-items: center;
+        border-radius: 100px;
+
+        &--textfield{
+            height: 40px;
+            width: 200px;
+            margin: 0 10px;
+            border-radius: 100px;
+            border: 0.5px solid rgb(189, 189, 189);
+            text-indent: 10px;
+        }
+
+        &--login-id{
+            margin: 0 20px;
+            color: rgb(100, 100, 100);
+        }
+
+        &--textfield:disabled{
+            height: 40px;
+            width: 200px;
+            display: flex;
+            margin: 0 10px;
+            border-radius: 100px;
+            border: 0.5px solid rgb(189, 189, 189);
+            text-indent: 10px;
+            color: $disabled-color;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button{
+            height: 40px;
+            width: 100px;
+            margin: 0 10px;
+            border: 1px solid $primary-color;
+            background-color: transparent;
+            border-radius: 100px;
+            color: $primary-color;
+        }
+
+        button:hover{
+            cursor: pointer;
+        }
+
+        button:disabled{
+            cursor:default;
+            border-color: $disabled-color;
+            color: $disabled-color;
+        }
+    }
+}
