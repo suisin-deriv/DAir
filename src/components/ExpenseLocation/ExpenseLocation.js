@@ -1,10 +1,13 @@
 import React from 'react'
-import { useObserver } from 'mobx-react'
+import { observer } from 'mobx-react'
+import { useStore } from '../../store/ExepnseStore'
 import Expense from '../Expense/Expense'
 import "./ExpenseLocation.scss"
 
-const ExpenseLocation = (props) => {
-    const store = React.useContext(props.expenseContext)
+const ExpenseLocation = () => {
+    const expenseStore  = useStore()
+    const { profile, synth_count, frx_count, com_count, crypt_count, stock_count, basket_count } = expenseStore
+
     const [synthIsOpen, setSynthIsOpen] = React.useState(true)
     const [frxIsOpen, setFrxIsOpen] = React.useState(true)
     const [comIsOpen, setComIsOpen] = React.useState(true)
@@ -12,7 +15,7 @@ const ExpenseLocation = (props) => {
     const [sindIsOpen, setSindIsOpen] = React.useState(true)
     const [bindIsOpen, setBindIsOpen] = React.useState(true)
     
-    return useObserver( () => (
+    return ( 
       <>
         <p className='expenses--title'>EXPENSES</p>
         <div className='expenses--container'>
@@ -28,7 +31,7 @@ const ExpenseLocation = (props) => {
             >
               <h1>SYNTHETIC INDICES</h1>
               <div className='expenses--container__synth--header__counter'>
-                {store.synth_count}
+                {synth_count}
               </div>
             </div>
   
@@ -36,7 +39,7 @@ const ExpenseLocation = (props) => {
               (
                 <div className='expenses--container__synth--content'>
                   {
-                    store.profile.expense_item.map(
+                    profile.expense_item.map(
                       (element,index) => (
                           element.category === "Synthetic Indices" ? 
                           (
@@ -67,7 +70,7 @@ const ExpenseLocation = (props) => {
             >
               <h1>FOREX</h1>
               <div className='expenses--container__synth--header__counter'>
-                {store.frx_count}
+                {frx_count}
               </div>
             </div>
   
@@ -75,7 +78,7 @@ const ExpenseLocation = (props) => {
               (
                 <div className='expenses--container__frx--content'>
                   {
-                    store.profile.expense_item.map(
+                    profile.expense_item.map(
                       (element,index) => 
                         (
                           element.category === "Forex" ? 
@@ -105,7 +108,7 @@ const ExpenseLocation = (props) => {
             >
               <h1>COMMODITIES</h1>
               <div className='expenses--container__synth--header__counter'>
-                {store.com_count}
+                {com_count}
               </div>
             </div>
   
@@ -113,7 +116,7 @@ const ExpenseLocation = (props) => {
               (
                 <div className='expenses--container__com--content'>
                   {
-                    store.profile.expense_item.map(
+                    profile.expense_item.map(
                       (element,index) => 
                         (
                           element.category === "Commodities" ? 
@@ -143,7 +146,7 @@ const ExpenseLocation = (props) => {
             >
               <h1>CRYPTOCURRENCIES</h1>
               <div className='expenses--container__synth--header__counter'>
-                {store.crypt_count}
+                {crypt_count}
               </div>
             </div>
   
@@ -151,7 +154,7 @@ const ExpenseLocation = (props) => {
               (
                 <div className='expenses--container__crypt--content'>
                   {
-                    store.profile.expense_item.map(
+                    profile.expense_item.map(
                       (element,index) => 
                         (
                           element.category === "Cryptocurrencies" ? 
@@ -181,7 +184,7 @@ const ExpenseLocation = (props) => {
             >
               <h1>STOCK INDICES</h1>
               <div className='expenses--container__synth--header__counter'>
-                {store.stock_count}
+                {stock_count}
               </div>
             </div>
   
@@ -189,7 +192,7 @@ const ExpenseLocation = (props) => {
               (
                 <div className='expenses--container__sind--content'>
                   {
-                    store.profile.expense_item.map(
+                    profile.expense_item.map(
                       (element,index) => 
                         (
                           element.category === "Stock Indices" ? 
@@ -219,7 +222,7 @@ const ExpenseLocation = (props) => {
             >
               <h1>BASKET INDICES</h1>
               <div className='expenses--container__synth--header__counter'>
-                {store.basket_count}
+                {basket_count}
               </div>
             </div>
   
@@ -227,7 +230,7 @@ const ExpenseLocation = (props) => {
               (
                 <div className='expenses--container__bind--content'>
                   {
-                    store.profile.expense_item.map(
+                    profile.expense_item.map(
                       (element,index) => 
                         (
                           element.category === "Basket Indices" ? 
@@ -248,8 +251,7 @@ const ExpenseLocation = (props) => {
   
         </div>
       </>
-      )
     )
   }
 
-export default ExpenseLocation
+export default observer(ExpenseLocation)

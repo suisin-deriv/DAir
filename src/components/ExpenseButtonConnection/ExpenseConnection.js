@@ -1,18 +1,21 @@
 import React from 'react'
-import { useObserver } from 'mobx-react'
+import { observer } from 'mobx-react'
+import { useStore } from '../../store/ExepnseStore'
 import "./ExpenseConnection.scss"
 
-const ExpenseConnection = (props) => {
-    const store = React.useContext(props.expenseContext)
-    return useObserver( ()=> (
+const ExpenseConnection = () => {
+    const expenseStore = useStore()
+    const { getConnected, profile, connected, isLoading } = expenseStore
+
+    return (
       <div className='button--container'>
         <div className='button--container__buttons'>
           {
-            (store.connected ? 
+            (connected ? 
               (
                 <div className='button--container__buttons'>
-                  <span className='button--container__buttons--login-id'>{store.profile.login_id}</span>
-                  <button onClick={store.getConnected} style={{backgroundColor:"red",color:"white"}}>
+                  <span className='button--container__buttons--login-id'>{profile.login_id}</span>
+                  <button onClick={getConnected} style={{backgroundColor:"red",color:"white"}}>
                     Disconnect
                   </button>
                 </div>
@@ -24,15 +27,15 @@ const ExpenseConnection = (props) => {
                     placeholder='Token'
                     onChange={
                       (e)=>{
-                        store.profile.token.authorize = e.target.value
+                        profile.token.authorize = e.target.value
                       }
                     }
                   />
-                  {(store.isLoading ? 
+                  {(isLoading ? 
                     <button disabled>
                       Loading...
                     </button> : 
-                    <button onClick={store.getConnected}>
+                    <button onClick={getConnected}>
                       Connect
                     </button>
                   )}
@@ -42,7 +45,7 @@ const ExpenseConnection = (props) => {
           }
         </div>
       </div>
-    ))
+    )
   }
 
-export default ExpenseConnection
+export default observer(ExpenseConnection)
