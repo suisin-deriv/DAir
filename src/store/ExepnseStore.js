@@ -29,8 +29,6 @@ export default class ExpenseStore {
     }
 
     ReadyToConnect(){
-        this.ConnectWS()
-
         this.connected ? this.Disconnect() : this.Connect()
     }
 
@@ -40,6 +38,7 @@ export default class ExpenseStore {
     }
 
     Connect(){
+        this.ConnectWS()
         this.reference.current.onopen = (msg)=>{
             this.SendAuthorizeRequest()
         }
