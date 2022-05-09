@@ -77,7 +77,8 @@ export default class ExpenseStore {
             
             case "balance":
                 this.profile.total_balance = data.balance.balance
-                this.get_statement ? this.reference.current.send(JSON.stringify(
+                this.get_statement ? 
+                this.reference.current.send(JSON.stringify(
                     {
                         statement: 1,
                         description: 1,
@@ -219,6 +220,7 @@ export default class ExpenseStore {
         }
         return this.reference.current.close()
     }
+    
 }
 
 decorate(ExpenseStore,{
