@@ -6,6 +6,7 @@ import ExpenseLocation from '../components/ExpenseLocation/ExpenseLocation';
 function ExpenseTracker() {
     return (
       <>
+        <h1>Hi</h1>
         <ExpenseBalance/>
         <ExpenseConnection/>
         <ExpenseLocation/>
