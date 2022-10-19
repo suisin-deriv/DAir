@@ -2,7 +2,7 @@ import { action, decorate, observable } from "mobx";
 import React from "react";
 
 export default class ExpenseStore {
-    reference = React.useRef(null)
+    reference =  {  }
     connected = false;
     isLoading = false;
     get_statement = false;
@@ -15,8 +15,10 @@ export default class ExpenseStore {
     stock_count = 0;
     basket_count = 0;
     profile = { login_id: '', total_balance: 0, token: {authorize: ''}, expense_item:[]};
+    contract_proposal = { proposal_id: '' };
 
     getConnected(){
+        debugger
         this.profile.token.authorize.length !== 15 ? 
 
         this.ErrorMessage() 
@@ -42,16 +44,22 @@ export default class ExpenseStore {
         this.reference.current.onopen = (msg)=>{
             this.SendAuthorizeRequest()
         }
-    }
-
-    SendAuthorizeRequest(){
-        this.reference.current.send(JSON.stringify(this.profile.token))
-
         this.reference.current.onmessage = (msg)=>{
+            debugger
             let data = JSON.parse(msg.data)
 
             this.SwitchStatement(data)
         }
+        this.reference.current.onclose = (msg) => {
+            debugger
+        }
+        this.reference.current.onerror = (msg) => {
+            debugger
+        }
+    }
+
+    SendAuthorizeRequest(){
+        this.reference.current.send(JSON.stringify(this.profile.token))
     }
 
     SwitchStatement(data){
@@ -102,12 +110,25 @@ export default class ExpenseStore {
 
                 this.CalculateExpense()
                 break;
-
+            case "proposal":
+                this.contract_proposal.proposal_id = data.proposal.id
+                this.setContractProposal()
+                break;
+            case "buy":
+                debugger
+                    alert(data)
+                    break
             default:
                 break;
         }
     }
-
+setContractProposal = () => {
+    debugger
+                        this.reference.current.send(JSON.stringify({
+                            "buy": this.contract_proposal.proposal_id,
+                            "price": 100
+                        }))
+}
     CalculateExpense(){
         let expenses_info = []
         let valueArr = []
@@ -199,6 +220,22 @@ export default class ExpenseStore {
                 this.profile.expense_item = expenses_info
             }
         )
+    }
+    buyContract = () => {
+        this.reference.current.send(JSON.stringify(
+                    {
+                        "proposal": 1,
+                        "amount": 100,
+                        "barrier": "+0.1",
+                        "basis": "payout",
+                        "contract_type": "CALL",
+                        "currency": "GBP",
+                        "duration": 60,
+                        "duration_unit": "s",
+                        "symbol": "R_100"
+                    }
+                ))
+        
     }
 
     Disconnect(){
