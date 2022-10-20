@@ -19,6 +19,7 @@ const ExpenseLocation = () => {
       <>
         <p className='expenses--title'>EXPENSES</p>
         <button onClick={expenseStore.buyContract}>Buy</button>
+        <button onClick={expenseStore.sellContract}>Sell</button>
         <div className='expenses--container'>
   
           <div className='expenses--container__synth'>
