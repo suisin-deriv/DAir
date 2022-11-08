@@ -7,6 +7,7 @@ export default class ExpenseStore {
   isLoading = false;
   get_statement = false;
   all_statement = [];
+  profit_table = [];
   calculate_balance = false;
   synth_count = 0;
   frx_count = 0;
@@ -14,7 +15,12 @@ export default class ExpenseStore {
   crypt_count = 0;
   stock_count = 0;
   basket_count = 0;
-  profile = { login_id: "", total_balance: 0, token: { authorize: "" }, expense_item: [] };
+  profile = {
+    login_id: "",
+    total_balance: 0,
+    token: { authorize: "" },
+    expense_item: [],
+  };
   contract_proposal = { proposal_id: "" };
   contract_portfolio = {
     contract_id: "",
@@ -26,7 +32,9 @@ export default class ExpenseStore {
     symbol: "R_100",
   };
   getConnected() {
-    this.profile.token.authorize.length !== 15 ? this.ErrorMessage() : this.ReadyToConnect();
+    this.profile.token.authorize.length !== 15
+      ? this.ErrorMessage()
+      : this.ReadyToConnect();
   }
 
   ErrorMessage() {
@@ -38,7 +46,9 @@ export default class ExpenseStore {
   }
 
   ConnectWS() {
-    this.reference.current = new WebSocket("wss://ws.binaryws.com/websockets/v3?app_id=1089");
+    this.reference.current = new WebSocket(
+      "wss://ws.binaryws.com/websockets/v3?app_id=1089"
+    );
     this.isLoading = true;
   }
 
@@ -58,6 +68,19 @@ export default class ExpenseStore {
 
   SendAuthorizeRequest() {
     this.reference.current.send(JSON.stringify(this.profile.token));
+  }
+
+  GetProfitTable() {
+    this.reference.current.send(
+      JSON.stringify({
+        profit_table: 1,
+        description: 1,
+        limit: 25,
+        offset: 0,
+        sort: "ASC",
+      })
+    );
+    this.get_statement = true;
   }
 
   SwitchStatement(data) {
@@ -92,7 +115,7 @@ export default class ExpenseStore {
                 offset: 0,
               })
             )
-          : (this.get_statement = true);
+          : this.GetProfitTable();
 
         break;
 
@@ -102,15 +125,30 @@ export default class ExpenseStore {
           amount: data.statement.transactions[0].amount,
           trade_item: data.statement.transactions[0].shortcode,
         });
-
+        this.GetProfitTable();
         this.CalculateExpense();
+        break;
+      case "profit_table":
+        this.profit_table = [];
+        data.profit_table.transactions.forEach((profit) => {
+          this.profit_table.push({
+            contract_id: profit.contract_id,
+            duration_type: profit.duration_type,
+            buy_price: profit.buy_price,
+            sell_price: profit.sell_price,
+            transaction_id: profit.transaction_id,
+            profit_or_loss: (profit.sell_price - profit.buy_price).toFixed(2),
+          });
+        });
+        console.log(this.profit_table);
         break;
       case "proposal":
         this.contract_proposal.proposal_id = data?.proposal?.id;
         this.setContractProposal();
         break;
       case "portfolio":
-        this.contract_portfolio.contract_id = data.portfolio?.contracts[0]?.contract_id;
+        this.contract_portfolio.contract_id =
+          data.portfolio?.contracts[0]?.contract_id;
         this.setContractPortifolio();
         break;
       case "buy":
@@ -161,7 +199,8 @@ export default class ExpenseStore {
     valueArr = this.all_statement.map(function (item) {
       return item.contract_id;
     });
-    const toFindDuplicates = (arry) => arry.filter((item, index) => arry.indexOf(item) !== index);
+    const toFindDuplicates = (arry) =>
+      arry.filter((item, index) => arry.indexOf(item) !== index);
     const duplicateElements = toFindDuplicates(valueArr);
 
     let count_synth = 0;
@@ -302,6 +341,7 @@ decorate(ExpenseStore, {
   stock_count: observable,
   basket_count: observable,
   profile: observable,
+  profit_table: observable,
   getConnected: action.bound,
   buy_settings: observable,
   setBuyPrice: action.bound,
