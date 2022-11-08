@@ -4,7 +4,7 @@ import "./Chart.scss";
 
 export default function Charts() {
   const expense_store = useStore();
-  const { buy_settings, setSymbol, setBasis, setDurationUnit } = expense_store;
+  const { buy_settings, setSymbol, setBasis, setBuyPrice, setDurationUnit } = expense_store;
   const api = React.useRef();
   const [active_symbols, setActiveSymbols] = React.useState();
   const [markets_list, setMarketsList] = React.useState([]);
@@ -91,7 +91,8 @@ export default function Charts() {
             if (e.target.value) {
               setAssetList(active_symbols.filter((a) => a.market === e.target.value));
             }
-          }}>
+          }}
+        >
           <option className="market--container__select--option" value="">
             Select a market
           </option>
@@ -110,7 +111,8 @@ export default function Charts() {
               setSelectedSymbol(e.target.value);
               setSymbol(e.target.value);
             }
-          }}>
+          }}
+        >
           <option className="market--container__select--option" value="">
             Select an asset
           </option>
@@ -139,6 +141,13 @@ export default function Charts() {
         <button onClick={() => setDurationUnit("t")}>Tick</button>
         <button onClick={() => setDurationUnit("m")}>Minutes</button>
       </div>
+      <input
+        type="number"
+        value={buy_settings.buy_price}
+        onChange={(e) => {
+          setBuyPrice(Number(e.target.value));
+        }}
+      />
     </div>
   );
 }
