@@ -6,7 +6,7 @@ import "./ExpenseLocation.scss";
 
 const ExpenseLocation = () => {
   const expense_store = useStore();
-  const { profile, synth_count, frx_count, com_count, crypt_count, stock_count, basket_count, buy_settings, setBuyPrice, setBasis, setDurationUnit } =
+  const { profile, synth_count, frx_count, com_count, crypt_count, stock_count, basket_count, buy_settings, setBuyPrice, } =
     expense_store;
 
   const [synthIsOpen, setSynthIsOpen] = React.useState(true);
@@ -25,18 +25,7 @@ const ExpenseLocation = () => {
           setBuyPrice(Number(e.target.value));
         }}
       />
-      <div>
-        <button onClick={expense_store.buyContract}>Buy</button>
-        <button onClick={expense_store.sellContract}>Sell</button>
-      </div>
-      <div>
-        <button onClick={() => setBasis("stake")}>Stake</button>
-        <button onClick={() => setBasis("payout")}>Payout</button>
-      </div>
-      <div>
-        <button onClick={() => setDurationUnit("t")}>Tick</button>
-        <button onClick={() => setDurationUnit("m")}>Minutes</button>
-      </div>
+
       {/* <div>
         <select onchange={ }>
           {[...Array.from(new Array(10)).keys()].map((tick) => {

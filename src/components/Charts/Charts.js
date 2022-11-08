@@ -4,7 +4,7 @@ import "./Chart.scss";
 
 export default function Charts() {
   const expense_store = useStore();
-  const { buy_settings, setSymbol } = expense_store;
+  const { buy_settings, setSymbol, setBasis, setDurationUnit } = expense_store;
   const api = React.useRef();
   const [active_symbols, setActiveSymbols] = React.useState();
   const [markets_list, setMarketsList] = React.useState([]);
@@ -125,6 +125,19 @@ export default function Charts() {
       </div>
       <div className="price">
         <span style={{ color }}>{price}</span>
+      </div>
+
+      <div>
+        <button onClick={expense_store.buyContract}>Buy</button>
+        <button onClick={expense_store.sellContract}>Sell</button>
+      </div>
+      <div>
+        <button onClick={() => setBasis("stake")}>Stake</button>
+        <button onClick={() => setBasis("payout")}>Payout</button>
+      </div>
+      <div>
+        <button onClick={() => setDurationUnit("t")}>Tick</button>
+        <button onClick={() => setDurationUnit("m")}>Minutes</button>
       </div>
     </div>
   );
