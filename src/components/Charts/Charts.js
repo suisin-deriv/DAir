@@ -4,7 +4,7 @@ import "./Chart.scss";
 
 export default function Charts() {
   const expense_store = useStore();
-  const { buy_settings, setSymbol } = expense_store;
+  const { buy_settings, setSymbol, setBasis, setBuyPrice, setDurationUnit } = expense_store;
   const api = React.useRef();
   const [active_symbols, setActiveSymbols] = React.useState();
   const [markets_list, setMarketsList] = React.useState([]);
@@ -91,7 +91,8 @@ export default function Charts() {
             if (e.target.value) {
               setAssetList(active_symbols.filter((a) => a.market === e.target.value));
             }
-          }}>
+          }}
+        >
           <option className="market--container__select--option" value="">
             Select a market
           </option>
@@ -110,7 +111,8 @@ export default function Charts() {
               setSelectedSymbol(e.target.value);
               setSymbol(e.target.value);
             }
-          }}>
+          }}
+        >
           <option className="market--container__select--option" value="">
             Select an asset
           </option>
@@ -126,6 +128,26 @@ export default function Charts() {
       <div className="price">
         <span style={{ color }}>{price}</span>
       </div>
+
+      <div>
+        <button onClick={expense_store.buyContract}>Buy</button>
+        <button onClick={expense_store.sellContract}>Sell</button>
+      </div>
+      <div>
+        <button onClick={() => setBasis("stake")}>Stake</button>
+        <button onClick={() => setBasis("payout")}>Payout</button>
+      </div>
+      <div>
+        <button onClick={() => setDurationUnit("t")}>Tick</button>
+        <button onClick={() => setDurationUnit("m")}>Minutes</button>
+      </div>
+      <input
+        type="number"
+        value={buy_settings.buy_price}
+        onChange={(e) => {
+          setBuyPrice(Number(e.target.value));
+        }}
+      />
     </div>
   );
 }
