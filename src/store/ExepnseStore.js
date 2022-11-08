@@ -19,7 +19,12 @@ export default class ExpenseStore {
   contract_portfolio = {
     contract_id: "",
   };
-
+  buy_settings = {
+    buy_price: 10,
+    basis: "payout",
+    duration_unit: "m",
+    symbol: "R_100",
+  };
   getConnected() {
     this.profile.token.authorize.length !== 15 ? this.ErrorMessage() : this.ReadyToConnect();
   }
@@ -47,10 +52,8 @@ export default class ExpenseStore {
 
       this.SwitchStatement(data);
     };
-    this.reference.current.onclose = (msg) => {
-    };
-    this.reference.current.onerror = (msg) => {
-    };
+    this.reference.current.onclose = (msg) => {};
+    this.reference.current.onerror = (msg) => {};
   }
 
   SendAuthorizeRequest() {
@@ -103,7 +106,7 @@ export default class ExpenseStore {
         this.CalculateExpense();
         break;
       case "proposal":
-        this.contract_proposal.proposal_id = data.proposal.id;
+        this.contract_proposal.proposal_id = data?.proposal?.id;
         this.setContractProposal();
         break;
       case "portfolio":
@@ -130,7 +133,18 @@ export default class ExpenseStore {
       })
     );
   };
-
+  setBuyPrice(price) {
+    this.buy_settings.buy_price = price;
+  }
+  setBasis(basis) {
+    this.buy_settings.basis = basis;
+  }
+  setDurationUnit(duration_unit) {
+    this.buy_settings.duration_unit = duration_unit;
+  }
+  setSymbol(symbol) {
+    this.buy_settings.symbol = symbol;
+  }
   setContractPortifolio = () => {
     this.reference.current.send(
       JSON.stringify({
@@ -234,14 +248,14 @@ export default class ExpenseStore {
     this.reference.current.send(
       JSON.stringify({
         proposal: 1,
-        amount: 1000,
-        barrier: "+0.1",
-        basis: "payout",
+        amount: this.buy_settings.buy_price,
+        // barrier: "+0.1",
+        basis: this.buy_settings.basis,
         contract_type: "CALL",
         currency: "USD",
         duration: 10,
-        duration_unit: "s",
-        symbol: "R_100",
+        duration_unit: this.buy_settings.duration_unit,
+        symbol: this.buy_settings.symbol,
       })
     );
   };
@@ -289,6 +303,11 @@ decorate(ExpenseStore, {
   basket_count: observable,
   profile: observable,
   getConnected: action.bound,
+  buy_settings: observable,
+  setBuyPrice: action.bound,
+  setBasis: action.bound,
+  setSymbol: action.bound,
+  setDurationUnit: action.bound,
 });
 
 let store_context;

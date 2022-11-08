@@ -1,12 +1,15 @@
 import React from "react";
+import { useStore } from "../../store/ExepnseStore";
 import "./Chart.scss";
 
 export default function Charts() {
+  const expense_store = useStore();
+  const { buy_settings, setSymbol } = expense_store;
   const api = React.useRef();
   const [active_symbols, setActiveSymbols] = React.useState();
   const [markets_list, setMarketsList] = React.useState([]);
   const [asset_list, setAssetList] = React.useState([]);
-  const [selected_symbol, setSelectedSymbol] = React.useState("");
+  const [selected_symbol, setSelectedSymbol] = React.useState(buy_settings.symbol);
   const [tick_id, setTickId] = React.useState("");
   const [price, setPrice] = React.useState(0);
   const [color, setColor] = React.useState("black");
@@ -88,8 +91,7 @@ export default function Charts() {
             if (e.target.value) {
               setAssetList(active_symbols.filter((a) => a.market === e.target.value));
             }
-          }}
-        >
+          }}>
           <option className="market--container__select--option" value="">
             Select a market
           </option>
@@ -106,9 +108,9 @@ export default function Charts() {
           onChange={(e) => {
             if (e.target.value) {
               setSelectedSymbol(e.target.value);
+              setSymbol(e.target.value);
             }
-          }}
-        >
+          }}>
           <option className="market--container__select--option" value="">
             Select an asset
           </option>
