@@ -1,0 +1,68 @@
+// global variable
+@use "./globals/color";
+@use "./globals/font";
+
+// components
+@import "./globals/reset";
+@import "./components/button";
+@import "./components/dropdown";
+@import "./components/textfield";
+
+html,
+body {
+  font-family: font.$font-family;
+  font-size: font.$global-font-size;
+  background-color: color.$background-color;
+  color: color.$text-main-color;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+p,
+span {
+  font-size: font.$text-size-s;
+  font-weight: font.$text-weight-medium;
+  line-height: font.$text-lh-s;
+}
+
+h1 {
+  font-size: font.$text-size-xl;
+  font-weight: font.$text-weight-bold;
+  line-height: font.$text-lh-l;
+}
+
+h2,
+h3 {
+  font-size: font.$text-size-l;
+  font-weight: font.$text-weight-medium;
+  line-height: font.$text-lh-m;
+}
+
+button {
+  @include main-button(color.$main-button-color, color.$text-main-color);
+}
+
+button:disabled {
+  @include main-button(color.$red-1-color, color.$text-main-color);
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+select {
+  @include dropdown;
+}
+
+input {
+  @include textfield;
+}
+
+.main-container {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  .body {
+    padding: 5rem 0rem;
+  }
+}

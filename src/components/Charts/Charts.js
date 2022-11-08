@@ -1,4 +1,5 @@
 import React from "react";
+import "./Chart.scss";
 
 export default function Charts() {
   const api = React.useRef();
@@ -20,7 +21,7 @@ export default function Charts() {
         })
       );
     });
-    
+
     api.current.addEventListener("message", (response) => {
       const data = JSON.parse(response.data);
       // eslint-disable-next-line default-case
@@ -76,40 +77,53 @@ export default function Charts() {
     }
   }, [selected_symbol]);
   return (
-    <div style={{justifyContent:'center', width:'100%', display:'flex'}}>
-      <h1>Jim</h1>
-      <select
-        onChange={(e) => {
-          if (e.target.value) {
-            setAssetList(active_symbols.filter((a) => a.market === e.target.value));
-          }
-        }}>
-        <option value="">Select a market</option>
-        {markets_list.map((m) => {
-          return (
-            <option key={m.id} value={m.id}>
-              {m.display_name}
-            </option>
-          );
-        })}
-      </select>
-      <select
-        onChange={(e) => {
-          if (e.target.value) {
-            setSelectedSymbol(e.target.value);
-          }
-        }}>
-        <option value="">Select an asset</option>
-        {asset_list.map((a) => {
-          return (
-            <option key={a.symbol} value={a.symbol}>
-              {a.display_name}
-            </option>
-          );
-        })}
-      </select>
-      <div style={{ color }}>{price}</div>
-      {!selected_symbol && <span className="txt-special-grey">Please select a market and symbol to track the price</span>}
+    <div className="market">
+      <div className="message">
+        <span>Select a market and symbol to view price.</span>
+      </div>
+      <div className="market--container">
+        <select
+          className="market--container__select"
+          onChange={(e) => {
+            if (e.target.value) {
+              setAssetList(active_symbols.filter((a) => a.market === e.target.value));
+            }
+          }}
+        >
+          <option className="market--container__select--option" value="">
+            Select a market
+          </option>
+          {markets_list.map((m) => {
+            return (
+              <option className="market--container__select--option" key={m.id} value={m.id}>
+                {m.display_name}
+              </option>
+            );
+          })}
+        </select>
+        <select
+          className="market--container__select"
+          onChange={(e) => {
+            if (e.target.value) {
+              setSelectedSymbol(e.target.value);
+            }
+          }}
+        >
+          <option className="market--container__select--option" value="">
+            Select an asset
+          </option>
+          {asset_list.map((a) => {
+            return (
+              <option className="market--container__select--option" key={a.symbol} value={a.symbol}>
+                {a.display_name}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      <div className="price">
+        <span style={{ color }}>{price}</span>
+      </div>
     </div>
   );
 }

@@ -21,7 +21,6 @@ export default class ExpenseStore {
   };
 
   getConnected() {
-    debugger;
     this.profile.token.authorize.length !== 15 ? this.ErrorMessage() : this.ReadyToConnect();
   }
 
@@ -44,16 +43,13 @@ export default class ExpenseStore {
       this.SendAuthorizeRequest();
     };
     this.reference.current.onmessage = (msg) => {
-      debugger;
       let data = JSON.parse(msg.data);
 
       this.SwitchStatement(data);
     };
     this.reference.current.onclose = (msg) => {
-      debugger;
     };
     this.reference.current.onerror = (msg) => {
-      debugger;
     };
   }
 
@@ -62,7 +58,6 @@ export default class ExpenseStore {
   }
 
   SwitchStatement(data) {
-    debugger;
     switch (data.msg_type) {
       case "authorize":
         if (data.error === undefined) {
@@ -112,17 +107,14 @@ export default class ExpenseStore {
         this.setContractProposal();
         break;
       case "portfolio":
-        debugger;
         this.contract_portfolio.contract_id = data.portfolio?.contracts[0]?.contract_id;
         this.setContractPortifolio();
         break;
       case "buy":
-        debugger;
         alert("Contract Bought");
         console.log(data);
         break;
       case "sell":
-        debugger;
         alert("Contract Sold");
         console.log(data);
         break;
@@ -131,7 +123,6 @@ export default class ExpenseStore {
     }
   }
   setContractProposal = () => {
-    debugger;
     this.reference.current.send(
       JSON.stringify({
         buy: this.contract_proposal.proposal_id,
@@ -141,7 +132,6 @@ export default class ExpenseStore {
   };
 
   setContractPortifolio = () => {
-    debugger;
     this.reference.current.send(
       JSON.stringify({
         sell: this.contract_portfolio.contract_id,

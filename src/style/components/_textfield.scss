@@ -1,0 +1,19 @@
+@use "../globals/color";
+@use "../globals/font";
+
+@mixin reset-input {
+  all: unset;
+}
+
+@mixin textfield {
+  @include reset-input;
+  background: none;
+  color: color.$text-main-color;
+  font-size: font.$text-size-s;
+  border: 1px solid color.$grey-color;
+  border-radius: 4px;
+  width: auto;
+  height: 3.2rem;
+  padding: 1rem 1.5rem;
+  text-align: left;
+}

@@ -1,21 +1,9 @@
-@import "../../App.scss";
-
+@use '../../style/globals/color';
 .balance--container{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 250px;
-    background-color: $primary-color;
-
-    p{
-        font-size: 12px;
-        font-weight: 500;
-        color: $title-color;
-    }
-
-    h1{
-        margin-top: 0;
-        color: white;
-    }
+    background-color: color.$panel-color;
 }

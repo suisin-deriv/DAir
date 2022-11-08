@@ -4,16 +4,12 @@
     text-indent: 10px;
     font-weight: 700;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 20px;
-    color: black;
     text-align: center;
 }
 
 .expenses--container{
-    margin-top: 2%;
     display: flex;
     flex-direction: column;
-    // justify-content: center;
     align-items: center;
 
     &__synth{

@@ -1,0 +1,20 @@
+@use "../globals/color";
+@use "../globals/font";
+
+@mixin reset-button {
+  background-color: none;
+  border: none;
+}
+
+@mixin main-button($bgcolor: color.$main-button-color, $color: color.$text-main-color) {
+  @include reset-button;
+  background-color: $bgcolor;
+  color: $color;
+  font-weight: font.$text-weight-bold;
+  font-size: font.$text-size-s;
+  border-radius: 4px;
+  text-align: center;
+  padding: 1rem 1.5rem;
+  height: 3.2em;
+  cursor: pointer;
+}

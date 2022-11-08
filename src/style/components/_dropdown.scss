@@ -1,0 +1,19 @@
+@use "../globals/color";
+@use "../globals/font";
+
+@mixin dropdown {
+  width: 20rem;
+  z-index: 2;
+  text-align: left;
+  position: relative;
+  margin: 0 1rem;
+  color: color.$text-main-color;
+  background-color: transparent;
+  border-radius: 4px;
+  padding: 1.6rem;
+  height: 5rem;
+  font-size: font.$text-size-s;
+  font-weight: font.$text-weight-bold;
+  border: 1px solid color.$grey-color;
+  cursor: pointer;
+}
