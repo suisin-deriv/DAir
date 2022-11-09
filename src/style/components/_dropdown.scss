@@ -6,13 +6,12 @@
   z-index: 2;
   text-align: left;
   position: relative;
-  margin: 0 1rem;
   color: color.$text-main-color;
   background-color: transparent;
   border-radius: 4px;
-  padding: 1.6rem;
-  height: 5rem;
-  font-size: font.$text-size-s;
+  padding: 1rem 1.5rem;
+  height: 100%;
+  font-size: font.$text-size-xs;
   font-weight: font.$text-weight-bold;
   border: 1px solid color.$grey-color;
   cursor: pointer;

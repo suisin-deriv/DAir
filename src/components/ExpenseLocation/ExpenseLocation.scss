@@ -1,180 +1,178 @@
-@import "../../App.scss";
-
-.expenses--title{
-    text-indent: 10px;
-    font-weight: 700;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    text-align: center;
+.expenses--title {
+  text-indent: 10px;
+  font-weight: 700;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  text-align: center;
 }
 
-.expenses--container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.expenses--container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    &__synth{
-        margin-top: 10px;
-        width: 90%;
+  &__synth {
+    margin-top: 10px;
+    width: 90%;
 
-        &--header{
-            @include color-container(#C6E6FD);
+    &--header {
+      @include color-container(#c6e6fd);
 
-            &__counter{
-                @include counter-container()
-            }
-        }
-
-        &--content{
-            @include color-content(#F4F4FE);
-        }
+      &__counter {
+        @include counter-container();
+      }
     }
 
-    &__frx{
-        margin-top: 10px;
-        width: 90%;
+    &--content {
+      @include color-content(#f4f4fe);
+    }
+  }
 
-        &--header{
-            @include color-container(#F7D9DA);
-        }
+  &__frx {
+    margin-top: 10px;
+    width: 90%;
 
-        &--content{
-            @include color-content(#fff2f2)
-        }
+    &--header {
+      @include color-container(#f7d9da);
     }
 
-    &__com{
-        margin-top: 10px;
-        width: 90%;
+    &--content {
+      @include color-content(#fff2f2);
+    }
+  }
 
-        &--header{
-            @include color-container(#e7d9f7);
-        }
+  &__com {
+    margin-top: 10px;
+    width: 90%;
 
-        &--content{
-            @include color-content(#f6f1fd)
-        }
+    &--header {
+      @include color-container(#e7d9f7);
     }
 
-    &__crypt{
-        margin-top: 10px;
-        width: 90%;
+    &--content {
+      @include color-content(#f6f1fd);
+    }
+  }
 
-        &--header{
-            @include color-container(#f7d9e8);
-        }
+  &__crypt {
+    margin-top: 10px;
+    width: 90%;
 
-        &--content{
-            @include color-content(#fff1f8)
-        }
+    &--header {
+      @include color-container(#f7d9e8);
     }
 
-    &__sind{
-        margin-top: 10px;
-        width: 90%;
+    &--content {
+      @include color-content(#fff1f8);
+    }
+  }
 
-        &--header{
-            @include color-container(#d9f7f0);
-        }
+  &__sind {
+    margin-top: 10px;
+    width: 90%;
 
-        &--content{
-            @include color-content(#fafffe)
-        }
+    &--header {
+      @include color-container(#d9f7f0);
     }
 
-    &__bind{
-        margin-top: 10px;
-        width: 90%;
-
-        &--header{
-            @include color-container(#f2f7d9);
-        }
-
-        &--content{
-            @include color-content(#fdfff2)
-        }
+    &--content {
+      @include color-content(#fafffe);
     }
+  }
+
+  &__bind {
+    margin-top: 10px;
+    width: 90%;
+
+    &--header {
+      @include color-container(#f2f7d9);
+    }
+
+    &--content {
+      @include color-content(#fdfff2);
+    }
+  }
 }
 
-@media screen and (min-width:$tablet) {
-    .expenses--container{
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        align-items: unset;
-        &__synth{
-            width: 45%;
-        }
-
-        &__frx{
-            width: 45%;
-        }
-
-        &__com{
-            width: 45%;
-        }
-
-        &__crypt{
-            width: 45%;
-        }
-
-        &__sind{
-            width: 45%;
-        }
-
-        &__bind{
-            width: 45%;
-        }
+@media screen and (min-width: $tablet) {
+  .expenses--container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: unset;
+    &__synth {
+      width: 45%;
     }
+
+    &__frx {
+      width: 45%;
+    }
+
+    &__com {
+      width: 45%;
+    }
+
+    &__crypt {
+      width: 45%;
+    }
+
+    &__sind {
+      width: 45%;
+    }
+
+    &__bind {
+      width: 45%;
+    }
+  }
 }
 
-@media screen and (min-width:$laptop-large) {
-    .expenses--container{
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        &__synth{
-            width: 30%;
-        }
-
-        &__frx{
-            width: 30%;
-        }
-
-        &__com{
-            width: 30%;
-        }
-
-        &__crypt{
-            width: 30%;
-        }
-
-        &__sind{
-            width: 30%;
-        }
-
-        &__bind{
-            width: 30%;
-        }
+@media screen and (min-width: $laptop-large) {
+  .expenses--container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    &__synth {
+      width: 30%;
     }
+
+    &__frx {
+      width: 30%;
+    }
+
+    &__com {
+      width: 30%;
+    }
+
+    &__crypt {
+      width: 30%;
+    }
+
+    &__sind {
+      width: 30%;
+    }
+
+    &__bind {
+      width: 30%;
+    }
+  }
 }
 
-@keyframes slideDown{
-	0% {
-		transform: translateY(-100%);
-	}
-	50%{
-		transform: translateY(8%);
-	}
-	65%{
-		transform: translateY(-4%);
-	}
-	80%{
-		transform: translateY(4%);
-	}
-	95%{
-		transform: translateY(-2%);
-	}			
-	100% {
-		transform: translateY(0%);
-	}		
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+  }
+  50% {
+    transform: translateY(8%);
+  }
+  65% {
+    transform: translateY(-4%);
+  }
+  80% {
+    transform: translateY(4%);
+  }
+  95% {
+    transform: translateY(-2%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
 }

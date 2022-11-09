@@ -1,39 +1,72 @@
 import React from "react";
 import { observer } from "mobx-react";
 import { useStore } from "../../store/ExepnseStore";
+import "./ExpenseHistory.scss";
 
 const ExpenseHistory = () => {
   const expense_store = useStore();
   const { profit_table } = expense_store;
 
+  const capitalizeFirstLetter = (str) => {
+    const capitalized = str.charAt(0).toUpperCase() + str.slice(1);
+    return capitalized;
+  };
+
   return (
-    <React.Fragment>
-      <table>
-        <thead>
-          <tr>
-            <th>Duration Type</th>
-            <th>Buy Price</th>
-            <th>Sell Price</th>
-            <th>Transaction ID</th>
-            <th>Profit/Loss</th>
-          </tr>
-        </thead>
-        <tbody>
-          {profit_table.map((item) => {
-            console.log(item);
+    <div className="history">
+      <div className="message">
+        <span>Previous Trades</span>
+      </div>
+      <div className="history__container">
+        {profit_table.length > 0 ? (
+          profit_table.map((item) => {
             return (
-              <tr id={item.contract_id}>
-                <td>{item.duration_type}</td>
-                <td>{item.buy_price}</td>
-                <td>{item.sell_price}</td>
-                <td>{item.transaction_id}</td>
-                <td>{item.profit_or_loss}</td>
-              </tr>
+              <div className="history__container--card">
+                <div className="history__container--card__content">
+                  <strong>Ref. ID</strong>
+                  <span>{item.transaction_id}</span>
+                  <strong>Duration</strong>
+                  <span>{capitalizeFirstLetter(item.duration_type)}</span>
+                </div>
+                <div className="history__container--card__content">
+                  <strong>Buy Price</strong>
+                  <span>${item.buy_price}</span>
+                  <strong>Sell Price</strong>
+                  <span>${item.sell_price}</span>
+                  <strong>Profit/Loss</strong>
+                  <span>{item.profit_or_loss}</span>
+                </div>
+              </div>
             );
-          })}
-        </tbody>
-      </table>
-    </React.Fragment>
+          })
+        ) : (
+          <div className="history__container--login">
+            <span>Connect your account via API key to view history</span>
+          </div>
+        )}
+        {/* {profit_table.map((item) => {
+          console.log(item);
+          return (
+            <div className="history__container--card">
+              <div className="history__container--card__content">
+                <strong>Ref. ID</strong>
+                <span>{item.transaction_id}</span>
+                <strong>Duration</strong>
+                <span>{capitalizeFirstLetter(item.duration_type)}</span>
+              </div>
+              <div className="history__container--card__content">
+                <strong>Buy Price</strong>
+                <span>${item.buy_price}</span>
+                <strong>Sell Price</strong>
+                <span>${item.sell_price}</span>
+                <strong>Profit/Loss</strong>
+                <span>{item.profit_or_loss}</span>
+              </div>
+            </div>
+          );
+        })} */}
+      </div>
+    </div>
   );
 };
 

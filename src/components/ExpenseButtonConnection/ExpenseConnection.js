@@ -2,15 +2,16 @@ import React from "react";
 import { observer } from "mobx-react";
 import { useStore } from "../../store/ExepnseStore";
 import "./ExpenseConnection.scss";
+import "../../style/style.scss";
 
 const ExpenseConnection = () => {
   const expenseStore = useStore();
   const { getConnected, profile, connected, isLoading } = expenseStore;
 
   return (
-    <div className="connnection">
-      <div className="connection--header">
-        <p>Enter Deriv API Token</p>
+    <div className="connection">
+      <div className="message">
+        <span>Enter Deriv API Token</span>
       </div>
       {connected ? (
         <div className="connection--container">
@@ -28,7 +29,7 @@ const ExpenseConnection = () => {
             }}
           />
           {isLoading ? (
-            <button disabled>Loading</button>
+            <button className="disabled">Loading</button>
           ) : (
             <button onClick={getConnected}>Connect</button>
           )}

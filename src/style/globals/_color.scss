@@ -5,13 +5,15 @@ $accent-color: #ff444f;
 $red-color: #{$accent-color};
 $red-1-color: #a32430;
 $green-color: #85acb0;
+$green-1-color: #3d9494;
 $grey-color: #c2c2c2;
 $dark-grey-color: #151717;
+$grey-1-color: #323738;
 // ui color
 $background-color: #{$primary-color};
 $main-button-color: #{$accent-color};
 $panel-color: #{$dark-grey-color};
-$green-button-color: #{$green-color};
+$overlay-color: hsla(0, 0%, 5%, 0.96);
 // font color
 $text-main-color: #{$secondary-color};
 $text-secondary-color: #{$grey-color};

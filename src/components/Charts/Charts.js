@@ -1,6 +1,8 @@
 import React from "react";
 import { useStore } from "../../store/ExepnseStore";
 import "./Chart.scss";
+import "../../style/style.scss";
+import ExpenseConnection from "../ExpenseButtonConnection/ExpenseConnection";
 
 export default function Charts() {
   const expense_store = useStore();
@@ -81,73 +83,78 @@ export default function Charts() {
   }, [selected_symbol]);
   return (
     <div className="market">
-      <div className="message">
-        <span>Select a market and symbol to view price.</span>
-      </div>
       <div className="market--container">
-        <select
-          className="market--container__select"
-          onChange={(e) => {
-            if (e.target.value) {
-              setAssetList(active_symbols.filter((a) => a.market === e.target.value));
-            }
-          }}
-        >
-          <option className="market--container__select--option" value="">
-            Select a market
-          </option>
-          {markets_list.map((m) => {
-            return (
-              <option className="market--container__select--option" key={m.id} value={m.id}>
-                {m.display_name}
-              </option>
-            );
-          })}
-        </select>
-        <select
-          className="market--container__select"
-          onChange={(e) => {
-            if (e.target.value) {
-              setSelectedSymbol(e.target.value);
-              setSymbol(e.target.value);
-            }
-          }}
-        >
-          <option className="market--container__select--option" value="">
-            Select an asset
-          </option>
-          {asset_list.map((a) => {
-            return (
-              <option className="market--container__select--option" key={a.symbol} value={a.symbol}>
-                {a.display_name}
-              </option>
-            );
-          })}
-        </select>
+        <ExpenseConnection />
+        <div className="market--container__price">
+          {price === 0 ? <h3>Select Markets and Assets</h3> : <h3>{price}</h3>}
+        </div>
+        <div className="market--container__content">
+          <select
+            onChange={(e) => {
+              if (e.target.value) {
+                setAssetList(active_symbols.filter((a) => a.market === e.target.value));
+              }
+            }}
+          >
+            <option value="">Select a market</option>
+            {markets_list.map((m) => {
+              return (
+                <option key={m.id} value={m.id}>
+                  {m.display_name}
+                </option>
+              );
+            })}
+          </select>
+          <select
+            onChange={(e) => {
+              if (e.target.value) {
+                setSelectedSymbol(e.target.value);
+                setSymbol(e.target.value);
+              }
+            }}
+          >
+            <option value="">Select an asset</option>
+            {asset_list.map((a) => {
+              return (
+                <option key={a.symbol} value={a.symbol}>
+                  {a.display_name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        <div className="market--container__content">
+          <input
+            type="number"
+            value={buy_settings.buy_price}
+            onChange={(e) => {
+              setBuyPrice(Number(e.target.value));
+            }}
+          />
+          <button className="transparent" onClick={() => setBasis("stake")}>
+            Stake
+          </button>
+          <button className="transparent" onClick={() => setBasis("payout")}>
+            Payout
+          </button>
+        </div>
+        <div className="market--container__content">
+          <button className="transparent" onClick={() => setDurationUnit("t")}>
+            Tick
+          </button>
+          <button className="transparent" onClick={() => setDurationUnit("m")}>
+            Minutes
+          </button>
+        </div>
+        <div className="market--container__btn">
+          <button className="buy market--container__btn--buy" onClick={expense_store.buyContract}>
+            Buy
+          </button>
+          <button className="market--container__btn--sell" onClick={expense_store.sellContract}>
+            Sell
+          </button>
+        </div>
       </div>
-      <div className="price">
-        <span style={{ color }}>{price}</span>
-      </div>
-
-      <div>
-        <button onClick={expense_store.buyContract}>Buy</button>
-        <button onClick={expense_store.sellContract}>Sell</button>
-      </div>
-      <div>
-        <button onClick={() => setBasis("stake")}>Stake</button>
-        <button onClick={() => setBasis("payout")}>Payout</button>
-      </div>
-      <div>
-        <button onClick={() => setDurationUnit("t")}>Tick</button>
-        <button onClick={() => setDurationUnit("m")}>Minutes</button>
-      </div>
-      <input
-        type="number"
-        value={buy_settings.buy_price}
-        onChange={(e) => {
-          setBuyPrice(Number(e.target.value));
-        }}
-      />
     </div>
   );
 }

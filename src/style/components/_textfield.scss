@@ -9,11 +9,13 @@
   @include reset-input;
   background: none;
   color: color.$text-main-color;
-  font-size: font.$text-size-s;
+  font-size: font.$text-size-xs;
   border: 1px solid color.$grey-color;
   border-radius: 4px;
-  width: auto;
-  height: 3.2rem;
+  max-height: 3rem;
+  height: 100%;
+  max-width: 20rem;
   padding: 1rem 1.5rem;
+  width: auto;
   text-align: left;
 }

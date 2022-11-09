@@ -1,9 +1,5 @@
-@use '../../style/globals/color';
-.balance--container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 250px;
-    background-color: color.$panel-color;
+.balance {
+  display: grid;
+  place-content: center;
+  height: 250px;
 }

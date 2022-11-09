@@ -1,6 +1,7 @@
 // global variable
 @use "./globals/color";
 @use "./globals/font";
+@use "./globals/spacing";
 
 // components
 @import "./globals/reset";
@@ -31,23 +32,46 @@ h1 {
   line-height: font.$text-lh-l;
 }
 
-h2,
 h3 {
-  font-size: font.$text-size-l;
-  font-weight: font.$text-weight-medium;
+  font-size: font.$text-size-m;
+  font-weight: font.$text-weight-bold;
   line-height: font.$text-lh-m;
 }
 
 button {
   @include main-button(color.$main-button-color, color.$text-main-color);
+  &:hover {
+    @include main-button(color.$red-1-color, color.$text-main-color);
+    cursor: pointer;
+  }
 }
 
-button:disabled {
+button.disabled {
   @include main-button(color.$red-1-color, color.$text-main-color);
+  cursor: none;
+  &:hover {
+    cursor: none;
+  }
 }
 
-button:hover {
-  cursor: pointer;
+button.buy {
+  @include main-button(color.$green-color, color.$text-main-color);
+  &:hover {
+    @include main-button(color.$green-1-color, color.$text-main-color);
+  }
+}
+
+button.transparent {
+  @include main-button(transparent, color.$text-main-color);
+  border: 1px solid color.$grey-color;
+  &:hover {
+    @include main-button(color.$grey-1-color, color.$text-main-color);
+    border: 1px solid color.$grey-color;
+  }
+  &:active {
+    @include main-button(color.$grey-1-color, color.$text-main-color);
+    border: 1px solid color.$grey-color;
+  }
 }
 
 select {
@@ -59,10 +83,33 @@ input {
 }
 
 .main-container {
-  height: 100vh;
+  height: 100%;
   display: grid;
   grid-template-rows: auto 1fr auto;
+  .header {
+    background-color: color.$panel-color;
+  }
   .body {
-    padding: 5rem 0rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: spacing.$small-gap;
+    height: 100%;
+  }
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    display: grid;
+    place-content: center;
+  }
+}
+
+.message {
+  padding-bottom: spacing.$reg-gap;
+  span {
+    color: color.$grey-color;
   }
 }

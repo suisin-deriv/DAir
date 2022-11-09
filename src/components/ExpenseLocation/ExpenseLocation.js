@@ -2,6 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import { useStore } from "../../store/ExepnseStore";
 import Expense from "../Expense/Expense";
+import ExpenseHistory from "../ExpenseHistory/ExpenseHistory";
 import "./ExpenseLocation.scss";
 import "../../style/style.scss";
 
@@ -27,7 +28,7 @@ const ExpenseLocation = () => {
 
   return (
     <React.Fragment>
-      <h1 className="expenses--title">Expense History</h1>
+      <h1>History</h1>
       <div className="expenses--container">
         <div className="expenses--container__synth">
           <div

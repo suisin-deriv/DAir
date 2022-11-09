@@ -1,24 +1,15 @@
 @use "../../style/globals/color";
 @use "../../style/globals/font";
-
-@import "../../App.scss";
+@use "../../style/globals/spacing";
 
 .connection {
-  height: 5rem;
-  &--header {
-    padding: 3rem;
-    p {
-      color: color.$grey-color;
-    }
-  }
   &--container {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding-bottom: 2.7rem;
-    height: 100%;
-    text-align: left;
+    margin-bottom: spacing.$reg-gap;
+    gap: spacing.$small-gap;
 
     input {
       height: 100%;
@@ -29,7 +20,7 @@
     button,
     button:disabled {
       height: 100%;
-      margin-left: 2.5rem;
+      margin-left: spacing.$small-gap;
       width: 12rem;
     }
     &__login {
