@@ -62,16 +62,17 @@ button.buy {
 }
 
 button.transparent {
-  @include main-button(transparent, color.$text-main-color);
+  @include main-button(color.$overlay-color, color.$text-main-color);
   border: 1px solid color.$grey-color;
   &:hover {
     @include main-button(color.$grey-1-color, color.$text-main-color);
     border: 1px solid color.$grey-color;
   }
-  &:active {
-    @include main-button(color.$grey-1-color, color.$text-main-color);
-    border: 1px solid color.$grey-color;
-  }
+}
+
+button.active {
+  @include main-button(color.$grey-1-color, color.$text-main-color);
+  border: 1px solid color.$grey-color;
 }
 
 select {

@@ -79,13 +79,13 @@ const Charts = () => {
             }}
           />
           <button
-            disabled={buy_settings.basis !== "stake"}
+            className={buy_settings.basis === "stake" ? "active" : "transparent"}
             onClick={() => setBasis("stake")}
           >
             Stake
           </button>
           <button
-            disabled={buy_settings.basis !== "payout"}
+            className={buy_settings.basis === "payout" ? "active" : "transparent"}
             onClick={() => setBasis("payout")}
           >
             Payout
