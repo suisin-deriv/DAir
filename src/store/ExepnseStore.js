@@ -40,13 +40,17 @@ export default class ExpenseStore {
     symbol: "R_100",
     duration: 15,
   };
+  error = "";
+  message = "";
   display_name = "";
   getConnected() {
-    this.profile.token.authorize.length !== 15 ? this.ErrorMessage() : this.ReadyToConnect();
+    this.profile.token.authorize.length !== 15
+      ? this.errorMessage()
+      : this.ReadyToConnect();
   }
 
-  ErrorMessage() {
-    alert("Check Your Token Again");
+  errorMessage() {
+    this.error = "Check Your Token Again";
   }
 
   ReadyToConnect() {
@@ -54,7 +58,9 @@ export default class ExpenseStore {
   }
 
   ConnectWS() {
-    this.reference.current = new WebSocket("wss://ws.binaryws.com/websockets/v3?app_id=1089");
+    this.reference.current = new WebSocket(
+      "wss://ws.binaryws.com/websockets/v3?app_id=1089"
+    );
     this.isLoading = true;
   }
 
@@ -75,11 +81,16 @@ export default class ExpenseStore {
   SendAuthorizeRequest() {
     this.reference.current.send(JSON.stringify(this.profile.token));
   }
+  clearMessage() {
+    this.message = "";
+  }
+  clearError() {
+    this.error = "";
+  }
 
   setDisplayName(displayName) {
     this.display_name = displayName;
   }
-
   GetProfitTable() {
     this.reference.current.send(
       JSON.stringify({
@@ -108,7 +119,7 @@ export default class ExpenseStore {
           this.connected = true;
           this.getMarkets();
         } else {
-          alert(data.error.code);
+          this.error = data.error.code;
           this.isLoading = false;
           this.connected = false;
         }
@@ -156,15 +167,10 @@ export default class ExpenseStore {
           this.contract_proposal.proposal_id = data?.proposal?.id;
           this.setContractProposal();
         } else {
-          alert(data.error.message);
+          this.error = data.error.message;
         }
         break;
-      case "portfolio":
-        this.contract_portfolio.contract_id = data.portfolio?.contracts[0]?.contract_id;
-        this.setContractPortifolio();
-        break;
       case "buy":
-        alert("Contract Bought");
         this.current_bought_items.push({
           buy_price: data.buy.buy_price,
           payout: data.buy.payout,
@@ -172,11 +178,20 @@ export default class ExpenseStore {
           transaction_id: data.buy.transaction_id,
           contract_name: this.display_name,
           title: data.buy.longcode,
+          contract_id: data.buy.contract_id,
         });
         break;
       case "sell":
-        alert("Contract Sold");
-        console.log(data);
+        if (!data.error) {
+          const contract_id = data.contract_id;
+          this.current_bought_items = this.current_bought_items.filter(
+            (item) => {
+              return item.contract_id !== contract_id;
+            }
+          );
+        } else {
+          this.error = data.error.message;
+        }
         break;
       case "active_symbols":
         let temp_markets = [];
@@ -186,7 +201,11 @@ export default class ExpenseStore {
             id: s.market,
             display_name: s.market_display_name,
           };
-          if (!temp_markets.find((m) => JSON.stringify(m) === JSON.stringify(new_market))) {
+          if (
+            !temp_markets.find(
+              (m) => JSON.stringify(m) === JSON.stringify(new_market)
+            )
+          ) {
             temp_markets.push(new_market);
           }
         });
@@ -229,14 +248,6 @@ export default class ExpenseStore {
   setSymbol(symbol) {
     this.buy_settings.symbol = symbol;
   }
-  setContractPortifolio = () => {
-    this.reference.current.send(
-      JSON.stringify({
-        sell: this.contract_portfolio.contract_id,
-        price: 100,
-      })
-    );
-  };
   getMarkets() {
     this.reference.current?.send(
       JSON.stringify({
@@ -274,7 +285,8 @@ export default class ExpenseStore {
     valueArr = this.all_statement.map(function (item) {
       return item.contract_id;
     });
-    const toFindDuplicates = (arry) => arry.filter((item, index) => arry.indexOf(item) !== index);
+    const toFindDuplicates = (arry) =>
+      arry.filter((item, index) => arry.indexOf(item) !== index);
     const duplicateElements = toFindDuplicates(valueArr);
 
     let count_synth = 0;
@@ -373,10 +385,11 @@ export default class ExpenseStore {
     );
   };
 
-  sellContract = () => {
+  sellContract = (contract_id) => {
     this.reference.current.send(
       JSON.stringify({
-        portfolio: 1,
+        sell: contract_id,
+        price: 100,
       })
     );
   };
@@ -437,6 +450,10 @@ decorate(ExpenseStore, {
   setAssets: action.bound,
   color: observable,
   setDuration: action.bound,
+  error: observable,
+  message: observable,
+  clearMessage: action.bound,
+  clearError: action.bound,
 });
 
 let store_context;
