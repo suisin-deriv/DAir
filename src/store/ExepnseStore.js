@@ -40,6 +40,7 @@ export default class ExpenseStore {
     symbol: "R_100",
     duration: 15,
   };
+  display_name = "";
   getConnected() {
     this.profile.token.authorize.length !== 15
       ? this.ErrorMessage()
@@ -77,6 +78,10 @@ export default class ExpenseStore {
 
   SendAuthorizeRequest() {
     this.reference.current.send(JSON.stringify(this.profile.token));
+  }
+
+  setDisplayName(displayName) {
+    this.display_name = displayName;
   }
 
   GetProfitTable() {
@@ -149,7 +154,6 @@ export default class ExpenseStore {
             profit_or_loss: (profit.sell_price - profit.buy_price).toFixed(2),
           });
         });
-        console.log(this.profit_table);
         break;
       case "proposal":
         if (!data.error) {
@@ -171,9 +175,9 @@ export default class ExpenseStore {
           payout: data.buy.payout,
           purchase_time: new Date(data.buy.purchase_time * 1000).toString(),
           transaction_id: data.buy.transaction_id,
+          contract_name: this.display_name,
           title: data.buy.longcode,
         });
-        console.log(data);
         break;
       case "sell":
         alert("Contract Sold");
@@ -437,6 +441,8 @@ decorate(ExpenseStore, {
   price: observable,
   getMarkets: action.bound,
   setSelectedSymbol: action.bound,
+  display_name: observable,
+  setDisplayName: action.bound,
   subscribeToTick: action.bound,
   setAssets: action.bound,
   color: observable,
