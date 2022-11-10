@@ -9,6 +9,7 @@
   @include reset-input;
   background: none;
   color: color.$text-main-color;
+  background-color: color.$overlay-color;
   font-size: font.$text-size-xs;
   border: 1px solid color.$grey-color;
   border-radius: 4px;
