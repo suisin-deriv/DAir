@@ -2,7 +2,7 @@ import { action, decorate, observable } from "mobx";
 import React from "react";
 
 export default class ExpenseStore {
-  reference = {};
+  reference = React.useRef();
   connected = false;
   isLoading = false;
   get_statement = false;
@@ -15,6 +15,13 @@ export default class ExpenseStore {
   crypt_count = 0;
   stock_count = 0;
   basket_count = 0;
+  markets = [];
+  symbols = [];
+  assets = [];
+  selected_symbol = 0;
+  tick_id = 0;
+  price = 0.0;
+  color = "black";
   profile = {
     login_id: "",
     total_balance: 0,
@@ -30,6 +37,7 @@ export default class ExpenseStore {
     basis: "payout",
     duration_unit: "m",
     symbol: "R_100",
+    duration: 15,
   };
   getConnected() {
     this.profile.token.authorize.length !== 15
@@ -96,12 +104,12 @@ export default class ExpenseStore {
           );
           this.isLoading = false;
           this.connected = true;
+          this.getMarkets();
         } else {
           alert(data.error.code);
           this.isLoading = false;
           this.connected = false;
         }
-
         break;
 
       case "balance":
@@ -143,8 +151,12 @@ export default class ExpenseStore {
         console.log(this.profit_table);
         break;
       case "proposal":
-        this.contract_proposal.proposal_id = data?.proposal?.id;
-        this.setContractProposal();
+        if (!data.error) {
+          this.contract_proposal.proposal_id = data?.proposal?.id;
+          this.setContractProposal();
+        } else {
+          alert(data.error.message);
+        }
         break;
       case "portfolio":
         this.contract_portfolio.contract_id =
@@ -158,6 +170,37 @@ export default class ExpenseStore {
       case "sell":
         alert("Contract Sold");
         console.log(data);
+        break;
+      case "active_symbols":
+        let temp_markets = [];
+        const symbols = data.active_symbols;
+        symbols.forEach((s) => {
+          const new_market = {
+            id: s.market,
+            display_name: s.market_display_name,
+          };
+          if (
+            !temp_markets.find(
+              (m) => JSON.stringify(m) === JSON.stringify(new_market)
+            )
+          ) {
+            temp_markets.push(new_market);
+          }
+        });
+        this.markets = temp_markets;
+        this.symbols = symbols;
+        break;
+      case "tick":
+        this.tick_id = data.tick.id;
+        const current_price = data.tick.quote;
+        if (current_price > this.price) {
+          this.color = "green";
+        } else if (current_price < this.price) {
+          this.color = "red";
+        } else {
+          this.color = "gray";
+        }
+        this.price = data.tick.quote;
         break;
       default:
         break;
@@ -191,6 +234,35 @@ export default class ExpenseStore {
       })
     );
   };
+  getMarkets() {
+    this.reference.current?.send(
+      JSON.stringify({
+        active_symbols: "brief",
+        product_type: "basic",
+      })
+    );
+  }
+  setDuration(duration) {
+    this.buy_settings.duration = duration;
+  }
+  setSelectedSymbol(selected_symbol) {
+    this.selected_symbol = selected_symbol;
+    this.subscribeToTick();
+  }
+  subscribeToTick() {
+    this.reference.current.send(JSON.stringify({ forget: this.tick_id }));
+    this.price = 0;
+    this.color = "black";
+    this.reference.current.send(
+      JSON.stringify({
+        ticks: this.selected_symbol,
+        subscribe: 1,
+      })
+    );
+  }
+  setAssets(assets) {
+    this.assets = assets;
+  }
 
   CalculateExpense() {
     let expenses_info = [];
@@ -292,7 +364,7 @@ export default class ExpenseStore {
         basis: this.buy_settings.basis,
         contract_type: "CALL",
         currency: "USD",
-        duration: 10,
+        duration: this.buy_settings.duration,
         duration_unit: this.buy_settings.duration_unit,
         symbol: this.buy_settings.symbol,
       })
@@ -324,7 +396,7 @@ export default class ExpenseStore {
       this.stock_count = 0;
       this.basket_count = 0;
     };
-    return this.reference.current.close();
+    return this.reference?.current?.close();
   }
 }
 
@@ -348,6 +420,18 @@ decorate(ExpenseStore, {
   setBasis: action.bound,
   setSymbol: action.bound,
   setDurationUnit: action.bound,
+  markets: observable,
+  symbols: observable,
+  assets: observable,
+  selected_symbol: observable,
+  tick_id: observable,
+  price: observable,
+  getMarkets: action.bound,
+  setSelectedSymbol: action.bound,
+  subscribeToTick: action.bound,
+  setAssets: action.bound,
+  color: observable,
+  setDuration: action.bound,
 });
 
 let store_context;

@@ -16,7 +16,6 @@ const ExpenseLocation = () => {
     crypt_count,
     stock_count,
     basket_count,
-    buy_settings,
   } = expense_store;
 
   const [synthIsOpen, setSynthIsOpen] = React.useState(true);
@@ -38,7 +37,9 @@ const ExpenseLocation = () => {
             }}
           >
             <span>Synthetic Indices</span>
-            <div className="expenses--container__synth--header__counter">{synth_count}</div>
+            <div className="expenses--container__synth--header__counter">
+              {synth_count}
+            </div>
           </div>
 
           {synthIsOpen ? (
@@ -65,7 +66,9 @@ const ExpenseLocation = () => {
             }}
           >
             <span>Forex</span>
-            <div className="expenses--container__synth--header__counter">{frx_count}</div>
+            <div className="expenses--container__synth--header__counter">
+              {frx_count}
+            </div>
           </div>
 
           {frxIsOpen ? (
@@ -92,7 +95,9 @@ const ExpenseLocation = () => {
             }}
           >
             <span>Commodities</span>
-            <div className="expenses--container__synth--header__counter">{com_count}</div>
+            <div className="expenses--container__synth--header__counter">
+              {com_count}
+            </div>
           </div>
 
           {comIsOpen ? (
@@ -119,7 +124,9 @@ const ExpenseLocation = () => {
             }}
           >
             <span>Cryptocurrencies</span>
-            <div className="expenses--container__synth--header__counter">{crypt_count}</div>
+            <div className="expenses--container__synth--header__counter">
+              {crypt_count}
+            </div>
           </div>
 
           {cryptIsOpen ? (
@@ -146,7 +153,9 @@ const ExpenseLocation = () => {
             }}
           >
             <span>Stock Indices</span>
-            <div className="expenses--container__synth--header__counter">{stock_count}</div>
+            <div className="expenses--container__synth--header__counter">
+              {stock_count}
+            </div>
           </div>
 
           {sindIsOpen ? (
@@ -173,7 +182,9 @@ const ExpenseLocation = () => {
             }}
           >
             <span>Basket Indices</span>
-            <div className="expenses--container__synth--header__counter">{basket_count}</div>
+            <div className="expenses--container__synth--header__counter">
+              {basket_count}
+            </div>
           </div>
 
           {bindIsOpen ? (
