@@ -19,6 +19,8 @@ const CurrentTrades = () => {
               <React.Fragment>
                 <div className="history__container--card">
                   <div className="history__container--card__content">
+                    <strong>Contract Name</strong>
+                    <span>{item.contract_name}</span>
                     <strong>Buy Time</strong>
                     <span>
                       {item.purchase_time.slice(

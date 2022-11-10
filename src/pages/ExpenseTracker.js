@@ -23,7 +23,17 @@ function ExpenseTracker() {
         </div>
       </div>
       <div className="footer">
-        <span>We are looking for investors please contact Jim</span>
+        <span>
+          We are looking for investors please contact{" "}
+          {
+            <a
+              style={{ color: "white", fontWeight: "bold" }}
+              href="https://ug.linkedin.com/in/jimdanielswasswa"
+            >
+              Jim Daniels
+            </a>
+          }
+        </span>
       </div>
     </div>
   );

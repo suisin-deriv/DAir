@@ -1,10 +1,10 @@
 import React from "react";
 import { useStore } from "../../store/ExepnseStore";
-import "./Chart.scss";
-import "../../style/style.scss";
 import ExpenseConnection from "../ExpenseButtonConnection/ExpenseConnection";
 import { observer } from "mobx-react";
 import Popup from "../Popup/popup";
+import "./Chart.scss";
+import "../../style/style.scss";
 
 const Charts = () => {
   const expense_store = useStore();
@@ -19,6 +19,7 @@ const Charts = () => {
     assets,
     setAssets,
     setSelectedSymbol,
+    setDisplayName,
     price,
     color,
     buyContract,
@@ -58,14 +59,21 @@ const Charts = () => {
             onChange={(e) => {
               if (e.target.value) {
                 setSelectedSymbol(e.target.value);
-                setSymbol(e.target.value);
+                setSymbol(JSON.parse(e.target.value).symbol);
+                setDisplayName(JSON.parse(e.target.value).name);
               }
             }}
           >
             <option value="">Select an asset</option>
             {assets?.map((a) => {
               return (
-                <option key={a.symbol} value={a.symbol}>
+                <option
+                  key={a.symbol}
+                  value={JSON.stringify({
+                    symbol: a.symbol,
+                    name: a.display_name,
+                  })}
+                >
                   {a.display_name}
                 </option>
               );
