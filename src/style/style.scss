@@ -113,3 +113,23 @@ input {
     color: color.$grey-color;
   }
 }
+.popup {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.8);
+  top: 0;
+  left: 0;
+  animation: fadein 0.5s ease-in-out 1;
+  z-index: 2;
+}
+.popup-content {
+  margin: 20% auto;
+}
+.popup-content > span {
+  padding: 1.5rem;
+  margin: 25% auto;
+  background-color: #364040;
+  color: #fff;
+  font-size: large;
+}

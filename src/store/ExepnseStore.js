@@ -39,14 +39,16 @@ export default class ExpenseStore {
     symbol: "R_100",
     duration: 15,
   };
+  error = "";
+  message = "";
   getConnected() {
     this.profile.token.authorize.length !== 15
-      ? this.ErrorMessage()
+      ? this.errorMessage()
       : this.ReadyToConnect();
   }
 
-  ErrorMessage() {
-    alert("Check Your Token Again");
+  errorMessage() {
+    this.error = "Check Your Token Again";
   }
 
   ReadyToConnect() {
@@ -77,7 +79,12 @@ export default class ExpenseStore {
   SendAuthorizeRequest() {
     this.reference.current.send(JSON.stringify(this.profile.token));
   }
-
+  clearMessage() {
+    this.message = "";
+  }
+  clearError() {
+    this.error = "";
+  }
   GetProfitTable() {
     this.reference.current.send(
       JSON.stringify({
@@ -106,7 +113,7 @@ export default class ExpenseStore {
           this.connected = true;
           this.getMarkets();
         } else {
-          alert(data.error.code);
+          this.error = data.error.code;
           this.isLoading = false;
           this.connected = false;
         }
@@ -155,7 +162,7 @@ export default class ExpenseStore {
           this.contract_proposal.proposal_id = data?.proposal?.id;
           this.setContractProposal();
         } else {
-          alert(data.error.message);
+          this.error = data.error.message;
         }
         break;
       case "portfolio":
@@ -164,11 +171,11 @@ export default class ExpenseStore {
         this.setContractPortifolio();
         break;
       case "buy":
-        alert("Contract Bought");
+        this.message = "Contract Bought";
         console.log(data);
         break;
       case "sell":
-        alert("Contract Sold");
+        this.message = "Contract Sold";
         console.log(data);
         break;
       case "active_symbols":
@@ -432,6 +439,10 @@ decorate(ExpenseStore, {
   setAssets: action.bound,
   color: observable,
   setDuration: action.bound,
+  error: observable,
+  message: observable,
+  clearMessage: action.bound,
+  clearError: action.bound,
 });
 
 let store_context;

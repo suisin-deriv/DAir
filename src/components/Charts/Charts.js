@@ -4,6 +4,7 @@ import "./Chart.scss";
 import "../../style/style.scss";
 import ExpenseConnection from "../ExpenseButtonConnection/ExpenseConnection";
 import { observer } from "mobx-react";
+import Popup from "../Popup/popup";
 
 const Charts = () => {
   const expense_store = useStore();
@@ -23,6 +24,8 @@ const Charts = () => {
     buyContract,
     sellContract,
     setDuration,
+    error,
+    message,
   } = expense_store;
   return (
     <div className="market">
@@ -121,6 +124,7 @@ const Charts = () => {
           </button>
         </div>
       </div>
+      {(error || message) && <Popup />}
     </div>
   );
 };
