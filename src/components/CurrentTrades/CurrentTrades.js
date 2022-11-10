@@ -5,7 +5,7 @@ import "./CurrentTrades.scss";
 
 const CurrentTrades = () => {
   const expense_store = useStore();
-  const { current_bought_items } = expense_store;
+  const { current_bought_items, sellContract } = expense_store;
 
   return (
     <div className="history">
@@ -35,6 +35,14 @@ const CurrentTrades = () => {
                     <strong>Transaction ID</strong>
                     <span>${item.transaction_id}</span>
                   </div>
+                  <button
+                    className="market--container__btn--sell"
+                    onClick={() => {
+                      sellContract(item.contract_id);
+                    }}
+                  >
+                    Sell
+                  </button>
                 </div>
               </React.Fragment>
             );

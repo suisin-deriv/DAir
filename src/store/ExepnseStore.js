@@ -166,25 +166,27 @@ export default class ExpenseStore {
           this.error = data.error.message;
         }
         break;
-      case "portfolio":
-        this.contract_portfolio.contract_id =
-          data.portfolio?.contracts[0]?.contract_id;
-        this.setContractPortifolio();
-        break;
       case "buy":
-        this.message = "Contract Bought";
         this.current_bought_items.push({
           buy_price: data.buy.buy_price,
           payout: data.buy.payout,
           purchase_time: new Date(data.buy.purchase_time * 1000).toString(),
           transaction_id: data.buy.transaction_id,
           title: data.buy.longcode,
+          contract_id: data.buy.contract_id,
         });
-        console.log(data);
         break;
       case "sell":
-        this.message = "Contract Sold";
-        console.log(data);
+        if (!data.error) {
+          const contract_id = data.contract_id;
+          this.current_bought_items = this.current_bought_items.filter(
+            (item) => {
+              return item.contract_id !== contract_id;
+            }
+          );
+        } else {
+          this.error = data.error.message;
+        }
         break;
       case "active_symbols":
         let temp_markets = [];
@@ -241,14 +243,6 @@ export default class ExpenseStore {
   setSymbol(symbol) {
     this.buy_settings.symbol = symbol;
   }
-  setContractPortifolio = () => {
-    this.reference.current.send(
-      JSON.stringify({
-        sell: this.contract_portfolio.contract_id,
-        price: 100,
-      })
-    );
-  };
   getMarkets() {
     this.reference.current?.send(
       JSON.stringify({
@@ -386,10 +380,11 @@ export default class ExpenseStore {
     );
   };
 
-  sellContract = () => {
+  sellContract = (contract_id) => {
     this.reference.current.send(
       JSON.stringify({
-        portfolio: 1,
+        sell: contract_id,
+        price: 100,
       })
     );
   };

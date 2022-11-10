@@ -22,7 +22,6 @@ const Charts = () => {
     price,
     color,
     buyContract,
-    sellContract,
     setDuration,
     error,
     message,
@@ -82,13 +81,17 @@ const Charts = () => {
             }}
           />
           <button
-            className={buy_settings.basis === "stake" ? "active" : "transparent"}
+            className={
+              buy_settings.basis === "stake" ? "active" : "transparent"
+            }
             onClick={() => setBasis("stake")}
           >
             Stake
           </button>
           <button
-            className={buy_settings.basis === "payout" ? "active" : "transparent"}
+            className={
+              buy_settings.basis === "payout" ? "active" : "transparent"
+            }
             onClick={() => setBasis("payout")}
           >
             Payout
@@ -96,13 +99,17 @@ const Charts = () => {
         </div>
         <div className="market--container__content">
           <button
-            className={buy_settings.duration_unit === "t" ? "active" : "transparent"}
+            className={
+              buy_settings.duration_unit === "t" ? "active" : "transparent"
+            }
             onClick={() => setDurationUnit("t")}
           >
             Tick
           </button>
           <button
-            className={buy_settings.duration_unit === "m" ? "active" : "transparent"}
+            className={
+              buy_settings.duration_unit === "m" ? "active" : "transparent"
+            }
             onClick={() => setDurationUnit("m")}
           >
             Minutes
@@ -116,11 +123,11 @@ const Charts = () => {
           />
         </div>
         <div className="market--container__btn">
-          <button className="buy market--container__btn--buy" onClick={buyContract}>
+          <button
+            className="buy market--container__btn--buy"
+            onClick={buyContract}
+          >
             Buy
-          </button>
-          <button className="market--container__btn--sell" onClick={sellContract}>
-            Sell
           </button>
         </div>
       </div>
