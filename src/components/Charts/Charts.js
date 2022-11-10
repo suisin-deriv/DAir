@@ -82,23 +82,29 @@ const Charts = () => {
             }}
           />
           <button
-            disabled={buy_settings.basis !== "stake"}
+            className={buy_settings.basis === "stake" ? "active" : "transparent"}
             onClick={() => setBasis("stake")}
           >
             Stake
           </button>
           <button
-            disabled={buy_settings.basis !== "payout"}
+            className={buy_settings.basis === "payout" ? "active" : "transparent"}
             onClick={() => setBasis("payout")}
           >
             Payout
           </button>
         </div>
         <div className="market--container__content">
-          <button className="transparent" onClick={() => setDurationUnit("t")}>
+          <button
+            className={buy_settings.duration_unit === "t" ? "active" : "transparent"}
+            onClick={() => setDurationUnit("t")}
+          >
             Tick
           </button>
-          <button className="transparent" onClick={() => setDurationUnit("m")}>
+          <button
+            className={buy_settings.duration_unit === "m" ? "active" : "transparent"}
+            onClick={() => setDurationUnit("m")}
+          >
             Minutes
           </button>
           <input
@@ -110,16 +116,10 @@ const Charts = () => {
           />
         </div>
         <div className="market--container__btn">
-          <button
-            className="buy market--container__btn--buy"
-            onClick={buyContract}
-          >
+          <button className="buy market--container__btn--buy" onClick={buyContract}>
             Buy
           </button>
-          <button
-            className="market--container__btn--sell"
-            onClick={sellContract}
-          >
+          <button className="market--container__btn--sell" onClick={sellContract}>
             Sell
           </button>
         </div>
