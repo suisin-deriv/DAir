@@ -91,16 +91,13 @@ input {
     background-color: color.$panel-color;
   }
   .body {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 550px));
+    place-content: center;
     gap: spacing.$small-gap;
     height: 100%;
   }
   .footer {
-    position: absolute;
-    bottom: 0;
     width: 100%;
     height: 100px;
     display: grid;

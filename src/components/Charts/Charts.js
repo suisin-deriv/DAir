@@ -1,9 +1,9 @@
 import React from "react";
 import { useStore } from "../../store/ExepnseStore";
-import "./Chart.scss";
-import "../../style/style.scss";
 import ExpenseConnection from "../ExpenseButtonConnection/ExpenseConnection";
 import { observer } from "mobx-react";
+import "./Chart.scss";
+import "../../style/style.scss";
 
 const Charts = () => {
   const expense_store = useStore();

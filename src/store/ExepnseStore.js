@@ -42,9 +42,7 @@ export default class ExpenseStore {
   };
   display_name = "";
   getConnected() {
-    this.profile.token.authorize.length !== 15
-      ? this.ErrorMessage()
-      : this.ReadyToConnect();
+    this.profile.token.authorize.length !== 15 ? this.ErrorMessage() : this.ReadyToConnect();
   }
 
   ErrorMessage() {
@@ -56,9 +54,7 @@ export default class ExpenseStore {
   }
 
   ConnectWS() {
-    this.reference.current = new WebSocket(
-      "wss://ws.binaryws.com/websockets/v3?app_id=1089"
-    );
+    this.reference.current = new WebSocket("wss://ws.binaryws.com/websockets/v3?app_id=1089");
     this.isLoading = true;
   }
 
@@ -164,8 +160,7 @@ export default class ExpenseStore {
         }
         break;
       case "portfolio":
-        this.contract_portfolio.contract_id =
-          data.portfolio?.contracts[0]?.contract_id;
+        this.contract_portfolio.contract_id = data.portfolio?.contracts[0]?.contract_id;
         this.setContractPortifolio();
         break;
       case "buy":
@@ -191,11 +186,7 @@ export default class ExpenseStore {
             id: s.market,
             display_name: s.market_display_name,
           };
-          if (
-            !temp_markets.find(
-              (m) => JSON.stringify(m) === JSON.stringify(new_market)
-            )
-          ) {
+          if (!temp_markets.find((m) => JSON.stringify(m) === JSON.stringify(new_market))) {
             temp_markets.push(new_market);
           }
         });
@@ -206,11 +197,11 @@ export default class ExpenseStore {
         this.tick_id = data.tick.id;
         const current_price = data.tick.quote;
         if (current_price > this.price) {
-          this.color = "green";
+          this.color = "#3d9494";
         } else if (current_price < this.price) {
-          this.color = "red";
+          this.color = "#a32430";
         } else {
-          this.color = "gray";
+          this.color = "#ffffff";
         }
         this.price = data.tick.quote;
         break;
@@ -283,8 +274,7 @@ export default class ExpenseStore {
     valueArr = this.all_statement.map(function (item) {
       return item.contract_id;
     });
-    const toFindDuplicates = (arry) =>
-      arry.filter((item, index) => arry.indexOf(item) !== index);
+    const toFindDuplicates = (arry) => arry.filter((item, index) => arry.indexOf(item) !== index);
     const duplicateElements = toFindDuplicates(valueArr);
 
     let count_synth = 0;
