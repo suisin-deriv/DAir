@@ -7,6 +7,7 @@ export default class ExpenseStore {
   isLoading = false;
   get_statement = false;
   all_statement = [];
+  current_bought_items = [];
   profit_table = [];
   calculate_balance = false;
   synth_count = 0;
@@ -90,7 +91,7 @@ export default class ExpenseStore {
       JSON.stringify({
         profit_table: 1,
         description: 1,
-        limit: 25,
+        limit: 100,
         offset: 0,
         sort: "ASC",
       })
@@ -118,7 +119,6 @@ export default class ExpenseStore {
           this.connected = false;
         }
         break;
-
       case "balance":
         this.profile.total_balance = data.balance.balance;
         this.get_statement
@@ -133,7 +133,6 @@ export default class ExpenseStore {
           : this.GetProfitTable();
 
         break;
-
       case "statement":
         this.all_statement.push({
           contract_id: data.statement.transactions[0].contract_id,
@@ -150,7 +149,9 @@ export default class ExpenseStore {
             contract_id: profit.contract_id,
             duration_type: profit.duration_type,
             buy_price: profit.buy_price,
+            buy_time: new Date(profit.purchase_time * 1000).toString(),
             sell_price: profit.sell_price,
+            sell_time: new Date(profit.sell_time * 1000).toString(),
             transaction_id: profit.transaction_id,
             profit_or_loss: (profit.sell_price - profit.buy_price).toFixed(2),
           });
@@ -172,6 +173,13 @@ export default class ExpenseStore {
         break;
       case "buy":
         this.message = "Contract Bought";
+        this.current_bought_items.push({
+          buy_price: data.buy.buy_price,
+          payout: data.buy.payout,
+          purchase_time: new Date(data.buy.purchase_time * 1000).toString(),
+          transaction_id: data.buy.transaction_id,
+          title: data.buy.longcode,
+        });
         console.log(data);
         break;
       case "sell":
@@ -421,6 +429,7 @@ decorate(ExpenseStore, {
   basket_count: observable,
   profile: observable,
   profit_table: observable,
+  current_bought_items: observable,
   getConnected: action.bound,
   buy_settings: observable,
   setBuyPrice: action.bound,

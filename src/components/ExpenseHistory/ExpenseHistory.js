@@ -19,22 +19,30 @@ const ExpenseHistory = () => {
       </div>
       <div className="history__container">
         {profit_table.length > 0 ? (
-          profit_table.map((item) => {
+          profit_table.reverse().map((item) => {
             return (
               <div className="history__container--card">
                 <div className="history__container--card__content">
-                  <strong>Ref. ID</strong>
-                  <span>{item.transaction_id}</span>
-                  <strong>Duration</strong>
-                  <span>{capitalizeFirstLetter(item.duration_type)}</span>
-                </div>
-                <div className="history__container--card__content">
+                  <strong>Buy Time</strong>
+                  <span>
+                    {item.buy_time.slice(0, item.buy_time.indexOf("G"))}
+                  </span>
                   <strong>Buy Price</strong>
                   <span>${item.buy_price}</span>
-                  <strong>Sell Price</strong>
-                  <span>${item.sell_price}</span>
+                  <strong>Ref. ID</strong>
+                  <span>{item.transaction_id}</span>
                   <strong>Profit/Loss</strong>
                   <span>{item.profit_or_loss}</span>
+                </div>
+                <div className="history__container--card__content">
+                  <strong>Sell Time</strong>
+                  <span>
+                    {item.sell_time.slice(0, item.sell_time.indexOf("G"))}
+                  </span>
+                  <strong>Sell Price</strong>
+                  <span>${item.sell_price}</span>
+                  <strong>Duration</strong>
+                  <span>{capitalizeFirstLetter(item.duration_type)}</span>
                 </div>
               </div>
             );
